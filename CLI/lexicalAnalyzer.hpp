@@ -1,3 +1,4 @@
+#pragma once
 #include "includes.hpp"
 
 struct Token
@@ -16,10 +17,7 @@ struct Token
 
 class LexicalAnalyzer
 {
-    std::string input;
-    size_t position;
-
 public:
-    LexicalAnalyzer(std::string input);
-    Token getToken();
+    Token getToken(std::string input, int position);
+    void printTokens();
 };

@@ -1,8 +1,9 @@
 #include "lexicalAnalyzer.hpp"
 
-LexicalAnalyzer::LexicalAnalyzer(std::string input) : input(input) {}
+void LexicalAnalyzer::printTokens()
+{}
 
-Token LexicalAnalyzer::getToken()
+Token LexicalAnalyzer::getToken(std::string input, int position)
 {
     while (position < input.size() && input[position] == ' ')
     {

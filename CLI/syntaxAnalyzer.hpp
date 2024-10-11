@@ -1,4 +1,6 @@
+#pragma once
 #include "includes.hpp"
+#include "lexicalAnalyzer.hpp"
 
 enum class parserStates
 {
@@ -9,19 +11,6 @@ enum class parserStates
     Finish
 };
 
-struct Token
-{
-    enum class Type
-    {
-        Word,
-        Option,
-        Value,
-        EOC
-    };
-
-    Type tokenType;
-    std::variant<std::string, int, double> value;
-};
 
 class SyntaxAnalyzer
 {

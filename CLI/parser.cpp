@@ -1,8 +1,9 @@
 #include "parser.hpp"
 
-// Parser::Parser(std::string input) : input(input), position(0) {}
+void Parser::parse(std::string input){
+    //syntaxAnalyzer.processInput(lexicalAnalyzer.getToken().tokenType);
 
-void Parser::parse(){
-    syntaxAnalyzer.processInput(lexicalAnalyzer.getToken().tokenType);
+    std::cout << "parse() is called and input is: " << input << std::endl;
+    lexicalAnalyzer.getToken(input, position);
 }
 

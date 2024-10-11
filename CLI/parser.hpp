@@ -1,14 +1,14 @@
-#include "includes.hpp"
+#pragma once
+#include "syntaxAnalyzer.hpp"
+
 
 class Parser
 {
-    // std::string input;
-    // size_t position;
-
     SyntaxAnalyzer syntaxAnalyzer;   // compostion
     LexicalAnalyzer lexicalAnalyzer; // compostion
-
+    
+    size_t position = 0;
+    
 public:
-    //Parser(std::string input);
-    void parse();
+    void parse(std::string input);
 };
