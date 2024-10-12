@@ -8,7 +8,8 @@ struct Token
         Word,
         Option,
         Value,
-        EOC
+        EOC, 
+        Unknown
     };
 
     Type tokenType;
@@ -18,6 +19,5 @@ struct Token
 class LexicalAnalyzer
 {
 public:
-    Token getToken(std::string input, int position);
-    void printTokens();
+    Token getToken(std::string input, int& position);    
 };

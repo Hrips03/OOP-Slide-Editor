@@ -1,64 +1,67 @@
 #include "syntaxAnalyzer.hpp"
 
-void SyntaxAnalyzer::processInput(Token::Type input)
+Token::Type SyntaxAnalyzer::processInput(Token::Type input)
 {
     switch (currentState)
     {
     case parserStates::Start:
-        if (input == Token::Type::Word)
+
+        switch (input)
         {
+        case Token::Type::Word:
             currentState = parserStates::Command;
-        }
-        else
-        {
+            break;
+        default:
             currentState = parserStates::Error;
+            break;
         }
+
         break;
 
     case parserStates::Command:
-        if (input == Token::Type::Word)
+
+        switch (input)
         {
-            // Stay in Command
-        }
-        else if (input == Token::Type::Option)
-        {
+        case Token::Type::Option:
             currentState = parserStates::Argument;
-        }
-        else if (input == Token::Type::Value)
-        {
-            currentState = parserStates::Error;
-        }
-        else if (input == Token::Type::EOC)
-        {
+            break;
+        case Token::Type::EOC:
             currentState = parserStates::Finish;
+            break;
+        case Token::Type::Value:
+        case Token::Type::Unknown:
+            currentState = parserStates::Error;
+            break;
         }
+
         break;
 
     case parserStates::Argument:
-        if (input == Token::Type::Word)
+
+        switch (input)
         {
-            currentState = parserStates::Error;
-        }
-        else if (input == Token::Type::Option || input == Token::Type::Value)
-        {
-            // Stay in Argument
-        }
-        else if (input == Token::Type::EOC)
-        {
+        case Token::Type::EOC:
             currentState = parserStates::Finish;
+            break;
+        case Token::Type::Word:
+        case Token::Type::Unknown:
+            currentState = parserStates::Error;
+            break;
         }
+
         break;
 
-    case parserStates::Finish:
-        // uraaa
-        break;
+        // case parserStates::Finish:
+        //     // uraaa
+        //     break;
 
-    case parserStates::Error:
-        std::terminate; // Error message
-        break;
+        // case parserStates::Error:
+        //     std::terminate; // Error message
+        //     break;
     }
 
     printCurrentState();
+    return input;
 }
 
 void SyntaxAnalyzer::printCurrentState()
@@ -83,4 +86,9 @@ void SyntaxAnalyzer::printCurrentState()
         break;
     }
     std::cout << std::endl;
+}
+
+parserStates SyntaxAnalyzer::getCurrentState() const
+{
+    return currentState;
 }

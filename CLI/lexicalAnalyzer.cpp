@@ -1,21 +1,19 @@
 #include "lexicalAnalyzer.hpp"
 
-void LexicalAnalyzer::printTokens()
-{}
-
-Token LexicalAnalyzer::getToken(std::string input, int position)
+Token LexicalAnalyzer::getToken(std::string input, int &position)
 {
-    while (position < input.size() && input[position] == ' ')
-    {
+    while (position < input.size() && std::isspace(input[position]))
         position++;
-    }
 
     if (position >= input.size())
     {
+        std::cout << "Token::Type::EOC  =  ' '" << "\n";
         return Token{Token::Type::EOC, ""};
     }
 
-    if (input[position] == '-')
+    char currentChar = input[position];
+
+    if (currentChar == '-')
     {
         position++;
         std::string option;
@@ -24,25 +22,48 @@ Token LexicalAnalyzer::getToken(std::string input, int position)
             option += input[position];
             position++;
         }
+        std::cout << "Token::Type::Option  =  " << option << "\n";
         return Token{Token::Type::Option, option};
     }
 
-    if (std::isdigit(input[position]))
+    if (std::isdigit(currentChar) || (currentChar == '.' && std::isdigit(input[position + 1])))
     {
-        int value = 0;
+        std::string numStr;
         while (position < input.size() && std::isdigit(input[position]))
         {
-            value = value * 10 + (input[position] - '0');
+            numStr += input[position];
             position++;
         }
+
+        if (position < input.size() && input[position] == '.')
+        {
+            numStr += '.';
+            position++;
+
+            while (position < input.size() && std::isdigit(input[position]))
+            {
+                numStr += input[position];
+                position++;
+            }
+        }
+
+        double value = std::stod(numStr);
+        std::cout << "Token::Type::Value  =  " << value << "\n";
         return Token{Token::Type::Value, value};
     }
 
-    std::string word;
-    while (position < input.size() && std::isalpha(input[position]))
+    if (std::isalpha(currentChar))
     {
-        word += input[position];
-        position++;
+        std::string word;
+        while (position < input.size() && std::isalpha(input[position]))
+        {
+            word += input[position];
+            position++;
+        }
+        std::cout << "Token::Type::Word  =  " << word << "\n";
+        return Token{Token::Type::Word, word};
     }
-    return Token{Token::Type::Word, word};
+
+    std::cout << "Token::Type::Unknown  =  " << std::string(1, input[position])<< "\n";
+    return Token{Token::Type::Unknown, std::string(1, input[position++])};
 }
