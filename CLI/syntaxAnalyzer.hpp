@@ -20,7 +20,7 @@ private:
 public:
     SyntaxAnalyzer() : currentState(parserStates::Start) {}
 
-    Token::Type processInput(Token::Type input);
+    Token processInput(Token input);
     void printCurrentState();
     parserStates getCurrentState() const;
 };

@@ -3,11 +3,12 @@
 void Parser::parse(std::string input)
 {
     Token token;
+    std::vector<Token> tokenVector;
     while (position < input.size())
     {
         token = lexicalAnalyzer.getToken(input, position);
-        syntaxAnalyzer.processInput(token.tokenType);
-
+        syntaxAnalyzer.processInput(token);
+    
 
         //kinda error handling
         if (syntaxAnalyzer.getCurrentState() == parserStates::Error)
@@ -24,5 +25,11 @@ void Parser::parse(std::string input)
                       << std::endl;
             break;
         }
+
+        tokenVector.push_back(token);
     }
+    command.lock()->semanticAnalizer(tokenVector);
+    
+
+
 }

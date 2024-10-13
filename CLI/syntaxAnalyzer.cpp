@@ -1,12 +1,12 @@
 #include "syntaxAnalyzer.hpp"
 
-Token::Type SyntaxAnalyzer::processInput(Token::Type input)
+Token SyntaxAnalyzer::processInput(Token input)
 {
     switch (currentState)
     {
     case parserStates::Start:
 
-        switch (input)
+        switch (input.tokenType)
         {
         case Token::Type::Word:
             currentState = parserStates::Command;
@@ -20,7 +20,7 @@ Token::Type SyntaxAnalyzer::processInput(Token::Type input)
 
     case parserStates::Command:
 
-        switch (input)
+        switch (input.tokenType)
         {
         case Token::Type::Option:
             currentState = parserStates::Argument;
@@ -38,7 +38,7 @@ Token::Type SyntaxAnalyzer::processInput(Token::Type input)
 
     case parserStates::Argument:
 
-        switch (input)
+        switch (input.tokenType)
         {
         case Token::Type::EOC:
             currentState = parserStates::Finish;
