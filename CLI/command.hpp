@@ -2,36 +2,6 @@
 #include "lexicalAnalyzer.hpp"
 #include "includes.hpp"
 
-// enum add
-// {
-//     slide,
-//     shape
-// };
-
-// enum remove
-// {
-//     slide,
-//     shape
-// };
-
-// enum slide
-// {
-//     pos
-// };
-
-// enum shape
-// {
-//     pos1,
-//     pos2
-// };
-
-// enum print
-// {
-//     slide
-// };
-
-
-
 
 class CommandCreator
 {

@@ -60,7 +60,7 @@ Token SyntaxAnalyzer::processInput(Token input)
         //     break;
     }
 
-    printCurrentState();
+    //printCurrentState();
     return input;
 }
 

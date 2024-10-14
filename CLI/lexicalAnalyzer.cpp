@@ -7,7 +7,7 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
 
     if (position >= input.size())
     {
-        std::cout << "Token::Type::EOC  =  ' '" << "\n";
+        //std::cout << "Token::Type::EOC  =  ' '" << "\n";
         return Token{Token::Type::EOC, ""};
     }
 
@@ -17,13 +17,26 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
     {
         position++;
         std::string option;
-        while (position < input.size() && std::isalpha(input[position]))
+
+        if (position < input.size() && std::isalpha(input[position]))
         {
             option += input[position];
             position++;
+
+            while (position < input.size() && std::isalnum(input[position]))
+            {
+                option += input[position];
+                position++;
+            }
+
+            //std::cout << "Token::Type::Option  =  " << option << "\n";
+            return Token{Token::Type::Option, option};
         }
-        std::cout << "Token::Type::Option  =  " << option << "\n";
-        return Token{Token::Type::Option, option};
+        else
+        {
+            //std::cout << "Token::Type::Unknown  =  " << std::string(1, currentChar) << "\n";
+            return Token{Token::Type::Unknown, std::string(1, currentChar)};
+        }
     }
 
     if (std::isdigit(currentChar) || (currentChar == '.' && std::isdigit(input[position + 1])))
@@ -48,7 +61,7 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
         }
 
         double value = std::stod(numStr);
-        std::cout << "Token::Type::Value  =  " << value << "\n";
+        //std::cout << "Token::Type::Value  =  " << value << "\n";
         return Token{Token::Type::Value, value};
     }
 
@@ -60,10 +73,10 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
             word += input[position];
             position++;
         }
-        std::cout << "Token::Type::Word  =  " << word << "\n";
+        //std::cout << "Token::Type::Word  =  " << word << "\n";
         return Token{Token::Type::Word, word};
     }
 
-    std::cout << "Token::Type::Unknown  =  " << std::string(1, input[position])<< "\n";
+    //std::cout << "Token::Type::Unknown  =  " << std::string(1, input[position]) << "\n";
     return Token{Token::Type::Unknown, std::string(1, input[position++])};
 }

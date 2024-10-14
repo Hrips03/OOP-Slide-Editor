@@ -3,8 +3,9 @@
 
 class Controller
 {
-    Parser parser;
-
+    Parser parser;  //composition
+    std::string input;
 public:
     void getCommand();
+    void parse();
 };

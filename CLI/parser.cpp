@@ -4,6 +4,7 @@ void Parser::parse(std::string input)
 {
     Token token;
     std::vector<Token> tokenVector;
+    input += " "; 
     while (position < input.size())
     {
         token = lexicalAnalyzer.getToken(input, position);
@@ -28,8 +29,7 @@ void Parser::parse(std::string input)
 
         tokenVector.push_back(token);
     }
-    command.lock()->semanticAnalizer(tokenVector);
-    
 
-
+    if (syntaxAnalyzer.getCurrentState() == parserStates::Finish)
+        command.lock()->semanticAnalizer(tokenVector);
 }

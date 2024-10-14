@@ -13,7 +13,7 @@ struct Token
     };
 
     Type tokenType;
-    std::variant<std::string, int, double> value;
+    std::variant<std::string, double> value;
 };
 
 class LexicalAnalyzer

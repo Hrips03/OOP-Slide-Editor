@@ -5,6 +5,7 @@ int main(){
     Controller obj;
     obj.getCommand();
     //decode - obj.parse();
+    obj.parse();
     //execute - obj.execute(); 
     //??
 }
