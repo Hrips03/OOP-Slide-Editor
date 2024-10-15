@@ -1,4 +1,4 @@
-#include "command.hpp"
+#include "cmdCreator.hpp"
 
 std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototypes()
 {
@@ -61,6 +61,7 @@ bool CommandCreator::semanticAnalizer(std::vector<Token> tokens)
             tokens[tokenIndex].tokenType != Token::Type::Value ||
             !std::holds_alternative<double>(tokens[tokenIndex].value))
         {
+            std::cerr << "Expected position number after: '" << option << "' command." <<std::endl;
             return false;
         }
         tokenIndex++;

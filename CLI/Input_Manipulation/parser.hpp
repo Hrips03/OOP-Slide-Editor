@@ -1,6 +1,6 @@
 #pragma once
 #include "syntaxAnalyzer.hpp"
-#include "command.hpp"
+#include "cmdCreator.hpp"
 
 
 class Parser

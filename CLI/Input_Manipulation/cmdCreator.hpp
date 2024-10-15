@@ -1,6 +1,6 @@
 #pragma once
 #include "lexicalAnalyzer.hpp"
-#include "includes.hpp"
+#include "../includes.hpp"
 
 
 class CommandCreator
