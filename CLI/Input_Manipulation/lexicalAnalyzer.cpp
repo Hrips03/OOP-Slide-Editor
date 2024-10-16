@@ -5,16 +5,12 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
     while (position < input.size() && std::isspace(input[position]))
         position++;
 
-    if (position >= input.size())
-    {
-        //std::cout << "Token::Type::EOC  =  ' '" << "\n";
-        return Token{Token::Type::EOC, ""};
-    }
-
     char currentChar = input[position];
+    static bool metOption = false;
 
     if (currentChar == '-')
     {
+        metOption = true;
         position++;
         std::string option;
 
@@ -37,7 +33,9 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
             //std::cout << "Token::Type::Unknown  =  " << std::string(1, currentChar) << "\n";
             return Token{Token::Type::Unknown, std::string(1, currentChar)};
         }
+
     }
+
 
     if (std::isdigit(currentChar) || (currentChar == '.' && std::isdigit(input[position + 1])))
     {
@@ -73,10 +71,19 @@ Token LexicalAnalyzer::getToken(std::string input, int &position)
             word += input[position];
             position++;
         }
-        //std::cout << "Token::Type::Word  =  " << word << "\n";
-        return Token{Token::Type::Word, word};
+        
+        if (metOption)
+        {
+            //std::cout << "Token::Type::Value  =  " << word << "\n";
+            return Token{Token::Type::Value, word};
+        }
+        else
+        {
+            //std::cout << "Token::Type::Word  =  " << word << "\n";
+            return Token{Token::Type::Word, word};
+        }
     }
 
     //std::cout << "Token::Type::Unknown  =  " << std::string(1, input[position]) << "\n";
-    return Token{Token::Type::Unknown, std::string(1, input[position++])};
+    return Token{Token::Type::EOC, ""};
 }

@@ -1,12 +1,41 @@
 #include "controller.hpp"
 
-void Controller::getCommand(){
-    //TO DO: use streams, don't know how
+//senc ankax okaya?
+std::stringstream getInput(std::istream &inputStream)
+{
+    std::stringstream stringStream;
+    char ch;
+    
     std::cout << "Enter a command: ";
-    getline(std::cin, input); 
+
+    while (inputStream.get(ch))
+    {
+        if (ch == '\n')
+            break; 
+        
+        stringStream << ch; 
+    }
+
+    return stringStream; 
 }
 
+void Controller::run(std::istream &inputStream)
+{
+    m_isRunning = true;
+    while (m_isRunning)
+    {
+        Parser obParser;
+        std::stringstream inputStringStream = getInput(inputStream);
+        std::shared_ptr<ICommand> pCmd;
+        // stex te parserum es stugumy?
+        if (!inputStringStream.str().empty())
+            obParser.parse(inputStringStream);
+        else
+            std::cout << "No input to parse." << std::endl;
+        
 
-void Controller::parse(){
-    parser.parse(input);
+        // ICommand *pCmd = obParser.parse(stringStream);
+        //pCmd->execute();
+        break;
+    }
 }

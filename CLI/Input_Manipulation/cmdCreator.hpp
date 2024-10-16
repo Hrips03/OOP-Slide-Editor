@@ -2,11 +2,15 @@
 #include "lexicalAnalyzer.hpp"
 #include "../includes.hpp"
 
+struct Command{
+    std::string cmdName;
+    std::map<std::string, std::variant<std::string, double>> argList;
+};
 
 class CommandCreator
 {
+    //Command cmd;
 public:
-    bool semanticAnalizer(std::vector<Token>);
+    Command semanticAnalizer(std::vector<Token>);
     std::map<std::string, std::vector<std::string>> createCmdPrototypes();
-    //virtual void execute() = 0;
 };

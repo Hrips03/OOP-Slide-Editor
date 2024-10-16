@@ -4,8 +4,8 @@
 class Controller
 {
     Parser parser;  //composition
-    std::string input;
+    bool m_isRunning; 
+    
 public:
-    void getCommand();
-    void parse();
+    void run(std::istream &input);
 };

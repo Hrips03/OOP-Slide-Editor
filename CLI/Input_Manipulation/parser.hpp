@@ -1,7 +1,7 @@
 #pragma once
 #include "syntaxAnalyzer.hpp"
 #include "cmdCreator.hpp"
-
+#include "../Command_Execution/ICommand.hpp"
 
 class Parser
 {
@@ -9,9 +9,8 @@ class Parser
     LexicalAnalyzer lexicalAnalyzer; // compostion
 
     std::weak_ptr<CommandCreator> command; //association
-
-    int position = 0;
-    
+    std::shared_ptr<ICommand> validCmd;     //agregation
+    //ICommand* validCmd;
 public:
-    void parse(std::string input);
+    std::shared_ptr<ICommand> parse(std::stringstream& input);
 };
