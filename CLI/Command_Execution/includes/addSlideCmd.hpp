@@ -1,7 +1,9 @@
 #include "ICommand.hpp"
 
-class removeShape : public ICommand
+class addSlide : public ICommand
 {
+    //Command command;
 public:
+
     void execute() override;
 };

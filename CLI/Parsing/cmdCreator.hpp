@@ -9,7 +9,6 @@ struct Command{
 
 class CommandCreator
 {
-    //Command cmd;
 public:
     Command semanticAnalizer(std::vector<Token>);
     std::map<std::string, std::vector<std::string>> createCmdPrototypes();

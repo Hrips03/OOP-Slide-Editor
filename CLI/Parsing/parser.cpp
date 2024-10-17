@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include "../commandAdapter.hpp"
 
 std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
 {
@@ -28,31 +29,35 @@ std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
 
         tokenVector.push_back(token);
     }
-
-    Command cmd;
-    if (syntaxAnalyzer.getCurrentState() == parserStates::Finish)
-        cmd = command.lock()->semanticAnalizer(tokenVector);
-
-
-    // std::cout << cmd.cmdName << "\n";
-
-    // for (const auto &arg : cmd.argList)
-    // {
-    //     std::cout << "Key: " << arg.first << ", Value: ";
-
-    //     // Check if the value is a string or a double using std::holds_alternative
-    //     if (std::holds_alternative<std::string>(arg.second))
-    //     {
-    //         std::cout << std::get<std::string>(arg.second) << "\n";
-    //     }
-    //     else if (std::holds_alternative<double>(arg.second))
-    //     {
-    //         std::cout << std::get<double>(arg.second) << "\n";
-    //     }
-    // }
-
-
-    //validCmd = std::make_shared<CommandCreator> cmd; //this is incorrect
     
-    return validCmd;
+    Command cmd;
+    try
+    {
+        if (syntaxAnalyzer.getCurrentState() == parserStates::Finish)
+            cmd = command.lock()->semanticAnalizer(tokenVector);
+    }
+    catch (const std::runtime_error &e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return nullptr;
+    }
+
+    std::cout << cmd.cmdName << "\n";
+
+    for (const auto &arg : cmd.argList)
+    {
+        std::cout << "Key: " << arg.first << ", Value: ";
+
+        // Check if the value is a string or a double using std::holds_alternative
+        if (std::holds_alternative<std::string>(arg.second))
+        {
+            std::cout << std::get<std::string>(arg.second) << "\n";
+        }
+        else if (std::holds_alternative<double>(arg.second))
+        {
+            std::cout << std::get<double>(arg.second) << "\n";
+        }
+    }
+    
+    return std::make_shared<CommandAdapter>(cmd);
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "syntaxAnalyzer.hpp"
 #include "cmdCreator.hpp"
-#include "../Command_Execution/ICommand.hpp"
+#include "../Command_Execution/includes/ICommand.hpp"
 
 class Parser
 {
