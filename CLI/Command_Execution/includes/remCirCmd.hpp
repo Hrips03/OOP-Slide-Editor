@@ -1,11 +1,10 @@
 #include "ICommand.hpp"
 #include "../../Parsing/cmdCreator.hpp"
 
-class removeSlide : public ICommand
+class removeCircle : public ICommand
 {
     Command command;
 public:
-    removeSlide(Command cmd) : command(cmd) {}
+    removeCircle(Command cmd) : command(cmd){}
     void execute() override;
 };
-

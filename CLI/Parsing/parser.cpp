@@ -20,11 +20,11 @@ std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
                 std::cerr << "Unknown symbol: ";
                 std::visit([](const auto &v)
                            { std::cout << v << std::endl; }, token.value);
-                break;
+                return nullptr;
             }
             // TO DO: add accurate error handling
             std::cerr << "Parsing aborted due to syntax error. See help to learn syntax." << std::endl;
-            break;
+            return nullptr;
         }
 
         tokenVector.push_back(token);

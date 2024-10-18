@@ -1,7 +1,10 @@
 #include "ICommand.hpp"
+#include "../../Parsing/cmdCreator.hpp"
 
-class exit : public ICommand
+class exitCmd : public ICommand
 {
+    Command command;
 public:
+    exitCmd(Command cmd) : command(cmd) {}
     void execute() override;
 };

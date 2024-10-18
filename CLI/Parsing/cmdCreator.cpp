@@ -19,11 +19,12 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
 
     // cli -> document -> visual
     optionsMap["print slide"] = {"pos"};
-
+    
     // cli -> visual
     optionsMap["help"];
     optionsMap["exit"];
-
+    optionsMap["print slides"];
+    
     return optionsMap;
 }
 
