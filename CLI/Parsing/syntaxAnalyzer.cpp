@@ -60,7 +60,7 @@ Token SyntaxAnalyzer::processInput(Token input)
         //     break;
     }
 
-    //printCurrentState();
+    // printCurrentState();
     return input;
 }
 
@@ -91,4 +91,9 @@ void SyntaxAnalyzer::printCurrentState()
 parserStates SyntaxAnalyzer::getCurrentState() const
 {
     return currentState;
+}
+
+void SyntaxAnalyzer::reset()
+{
+    currentState = parserStates::Start; // Reset to the initial state
 }

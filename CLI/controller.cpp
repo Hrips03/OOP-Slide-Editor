@@ -39,6 +39,6 @@ void Controller::run(std::istream &inputStream)
             break;
         }
         
-        break;
+        //break;
     }
 }

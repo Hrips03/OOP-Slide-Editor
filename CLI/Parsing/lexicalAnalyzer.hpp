@@ -18,6 +18,7 @@ struct Token
 
 class LexicalAnalyzer
 {
+    bool metOption = false;
 public:
     Token getToken(std::string input, int& position);    
 };

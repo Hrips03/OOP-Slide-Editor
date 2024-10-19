@@ -2,11 +2,13 @@
 
 Token LexicalAnalyzer::getToken(std::string input, int &position)
 {
+    // std::cout << "input = " <<input << std::endl;
+    // std::cout << "position = " <<position << std::endl;
+
     while (position < input.size() && std::isspace(input[position]))
         position++;
 
     char currentChar = input[position];
-    static bool metOption = false;
 
     if (currentChar == '-')
     {

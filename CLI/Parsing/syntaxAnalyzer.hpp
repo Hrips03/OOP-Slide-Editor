@@ -19,7 +19,7 @@ private:
 
 public:
     SyntaxAnalyzer() : currentState(parserStates::Start) {}
-
+    void reset();
     Token processInput(Token input);
     void printCurrentState();
     parserStates getCurrentState() const;

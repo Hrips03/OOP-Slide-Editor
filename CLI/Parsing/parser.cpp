@@ -3,6 +3,7 @@
 
 std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
 {
+    syntaxAnalyzer.reset();
     Token token;
     std::vector<Token> tokenVector;
     inputStream << " ";
