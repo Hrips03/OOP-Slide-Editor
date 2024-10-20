@@ -2,8 +2,8 @@
 #include "../../Editor/editor.hpp"
 
 void addTriangle :: execute(){
-    auto myDocument = std::make_shared<Document>(); 
+    std::shared_ptr<Document> myDocument = Document::getInstance();
     Editor editor(myDocument);
     editor.handler(command);
-    std::cout << "Triangle is added successfully.\n";
+    //std::cout << "Triangle is added successfully.\n";
 }

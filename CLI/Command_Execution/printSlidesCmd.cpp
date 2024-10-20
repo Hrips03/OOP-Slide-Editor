@@ -3,8 +3,8 @@
 
 void printSlides ::execute()
 {
-    auto myDocument = std::make_shared<Document>();
+    std::shared_ptr<Document> myDocument = Document::getInstance();
     Editor editor(myDocument);
     editor.handler(command);
-    std::cout << "Printing all slides.\n";
+    //std::cout << "Printing all slides.\n";
 }

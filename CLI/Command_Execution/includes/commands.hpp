@@ -11,4 +11,3 @@
 #include "printSlideCmd.hpp"
 #include "printSlidesCmd.hpp"
 #include "helpCmd.hpp"
-#include "exitCmd.hpp"

@@ -21,24 +21,25 @@ std::stringstream getInput(std::istream &inputStream)
 
 void Controller::run(std::istream &inputStream)
 {
-    m_isRunning = true;
     while (m_isRunning)
     {
         Parser obParser;
         std::stringstream inputStringStream = getInput(inputStream);
-        std::shared_ptr<ICommand> pCmd = obParser.parse(inputStringStream);
+        
+        if (inputStringStream.str() == "exit")
+            break;
 
+        std::shared_ptr<ICommand> pCmd = obParser.parse(inputStringStream);
         if (pCmd)
         {
-            std::cout << "Execution...\n";
-            pCmd->execute(); 
+            //std::cout << "Execution...\n";
+            pCmd->execute();
         }
         else
         {
             std::cerr << "Failed to parse command." << std::endl;
-            break;
         }
-        
-        //break;
+
+        // break;
     }
 }

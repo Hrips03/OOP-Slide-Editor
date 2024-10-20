@@ -2,8 +2,8 @@
 #include "../../Editor/editor.hpp"
 
 void addSlide :: execute(){
-    auto myDocument = std::make_shared<Document>(); // Create a shared_ptr for Document
+    std::shared_ptr<Document> myDocument = Document::getInstance();
     Editor editor(myDocument);
     editor.handler(command);
-    std::cout << "Slide is added successfully.\n";
+    //std::cout << "Slide is added successfully.\n";
 }

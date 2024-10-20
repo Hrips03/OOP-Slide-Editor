@@ -4,7 +4,6 @@ void CommandAdapter::execute()
 {
     if (command.cmdName == "add slide")
     {
-        std::cout<< "command adapter: add slide command is being executes" << std::endl;
         addSlide addSlideCommand(command);
         addSlideCommand.execute();
     }
@@ -57,10 +56,5 @@ void CommandAdapter::execute()
     {
         help helpCommand(command);
         helpCommand.execute();
-    }
-    else if (command.cmdName == "exit")
-    {
-        exitCmd exitCommand(command);
-        exitCommand.execute();
     }
 }

@@ -43,22 +43,22 @@ std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
         return nullptr;
     }
 
-    std::cout << cmd.cmdName << "\n";
+    //std::cout << cmd.cmdName << "\n";
 
-    for (const auto &arg : cmd.argList)
-    {
-        std::cout << "Key: " << arg.first << ", Value: ";
+    // for (const auto &arg : cmd.argList)
+    // {
+    //     std::cout << "Key: " << arg.first << ", Value: ";
 
-        // Check if the value is a string or a double using std::holds_alternative
-        if (std::holds_alternative<std::string>(arg.second))
-        {
-            std::cout << std::get<std::string>(arg.second) << "\n";
-        }
-        else if (std::holds_alternative<double>(arg.second))
-        {
-            std::cout << std::get<double>(arg.second) << "\n";
-        }
-    }
+    //     // Check if the value is a string or a double using std::holds_alternative
+    //     if (std::holds_alternative<std::string>(arg.second))
+    //     {
+    //         std::cout << std::get<std::string>(arg.second) << "\n";
+    //     }
+    //     else if (std::holds_alternative<double>(arg.second))
+    //     {
+    //         std::cout << std::get<double>(arg.second) << "\n";
+    //     }
+    // }
     
     return std::make_shared<CommandAdapter>(cmd);
 }

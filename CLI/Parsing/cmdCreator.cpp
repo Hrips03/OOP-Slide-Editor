@@ -4,7 +4,6 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
 {
     std::map<std::string, std::vector<std::string>> optionsMap;
 
-    // cli -> editor -> document -> visual
     optionsMap["add slide"] = {"pos"};
     optionsMap["remove slide"] = {"pos"};
 
@@ -17,10 +16,8 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["add circle"] = {"pos1", "pos2", "slide", "col"};
     optionsMap["remove circle"] = {"pos1", "pos2", "slide"};
 
-    // cli -> document -> visual
     optionsMap["print slide"] = {"pos"};
     
-    // cli -> visual
     optionsMap["help"];
     optionsMap["exit"];
     optionsMap["print slides"];
@@ -46,7 +43,7 @@ Command CommandCreator::semanticAnalizer(std::vector<Token> tokens)
     if (it == prototypes.end())
     {
         std::cerr << "Unknown command: " << command << std::endl;
-        std::terminate;
+        throw std::runtime_error("Unknown command: " + command + ".");
     }
 
     std::vector<std::string> expectedOptions = it->second;
