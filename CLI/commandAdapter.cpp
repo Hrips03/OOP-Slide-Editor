@@ -1,5 +1,7 @@
 #include "commandAdapter.hpp"
 
+//TK: CommandCreator should return ICommand, this if elese is not needed, 
+// CommandAdapter is useless class, get rid from it
 void CommandAdapter::execute() 
 {
     if (command.cmdName == "add slide")

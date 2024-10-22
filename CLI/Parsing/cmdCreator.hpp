@@ -10,6 +10,7 @@ struct Command{
 class CommandCreator
 {
 public:
+    //TK: You cn Return constructed commands instead 
     Command semanticAnalizer(std::vector<Token>);
     std::map<std::string, std::vector<std::string>> createCmdPrototypes();
 };

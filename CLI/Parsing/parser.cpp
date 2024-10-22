@@ -8,10 +8,23 @@ std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
     std::vector<Token> tokenVector;
     inputStream << " ";
 
-    int position = 0;
+    int position = 0; //TK: no position, no checks, parser should not handle input stream directly
+    
+    /* for example
+    //TK: pass stream to token, also no need to keep vector of Tokens  
+    token = lexicalAnalyzer.getToken(inputStream); 
+    whule (token.tokenType != Token::Type::EOC) 
+    {
+        syntaxAnalyzer.processInput(token);
+        ...
+        token = lexicalAnalyzer.getToken(inputStream.str(), position); 
+    }
+    */
+
+
     while (position < inputStream.str().size())
     {
-        token = lexicalAnalyzer.getToken(inputStream.str(), position);
+        token = lexicalAnalyzer.getToken(inputStream.str(), position); 
         syntaxAnalyzer.processInput(token);
 
         if (syntaxAnalyzer.getCurrentState() == parserStates::Error)
@@ -35,6 +48,7 @@ std::shared_ptr<ICommand> Parser::parse(std::stringstream &inputStream)
     try
     {
         if (syntaxAnalyzer.getCurrentState() == parserStates::Finish)
+            //TK: use prefix like m_* to distinguish memebers from locals, also do not use identical names different by only first letter case
             cmd = command.lock()->semanticAnalizer(tokenVector);
     }
     catch (const std::runtime_error &e)

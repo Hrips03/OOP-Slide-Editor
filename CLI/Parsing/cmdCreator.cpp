@@ -2,6 +2,7 @@
 
 std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototypes()
 {
+    //TK: This map should be static and initialized only once 
     std::map<std::string, std::vector<std::string>> optionsMap;
 
     optionsMap["add slide"] = {"pos"};
@@ -27,6 +28,7 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
 
 Command CommandCreator::semanticAnalizer(std::vector<Token> tokens)
 {
+    //TK: createCmdPrototypes() called each time, indeed?
     std::map<std::string, std::vector<std::string>> prototypes = createCmdPrototypes();
     
     std::string command = std::get<std::string>(tokens[0].value);

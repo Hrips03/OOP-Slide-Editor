@@ -1,8 +1,8 @@
 #pragma once
 #include "../includes.hpp"
 #include "lexicalAnalyzer.hpp"
- 
-enum class parserStates
+
+enum class parserStates //TK: Please always start type names with Capital letter 
 {
     Start,
     Command,
