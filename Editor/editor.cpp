@@ -1,6 +1,6 @@
 #include "editor.hpp"
 #include "function_imp.hpp"
-
+//TK: Editori imastn skhal es haskacel, if else chka, go gracov ICommand interface-n lriv animast e
 void Editor::handler(Command cmd)
 {
     if (cmd.cmdName == "add slide")

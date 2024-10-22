@@ -20,5 +20,6 @@ class LexicalAnalyzer
 {
     bool metOption = false;
 public:
+    //TK: getToken should accpet istream not string
     Token getToken(std::string input, int& position);    
 };

@@ -1,11 +1,13 @@
 #include "controller.hpp"
 
-// senc ankax okaya?
+// senc ankax okaya? - No :)
 std::stringstream getInput(std::istream &inputStream)
 {
     std::stringstream stringStream;
     char ch;
 
+    //TK: Input function should not output to the console, why std::cout? 
+    //TK: output formatting in a seperate task and controller should delegete all console output to it including error
     std::cout << "Enter a command: ";
 
     while (inputStream.get(ch))
@@ -26,6 +28,8 @@ void Controller::run(std::istream &inputStream)
         Parser obParser;
         std::stringstream inputStringStream = getInput(inputStream);
         
+        //TK: Parser & commands are skipped, not good
+        //TK: exit should be a comand like other commands 
         if (inputStringStream.str() == "exit")
             break;
 
@@ -37,6 +41,8 @@ void Controller::run(std::istream &inputStream)
         }
         else
         {
+            //TK: Parser error is not implemented, there should be try catch block and parser should throw 
+            //TK: see also comments above
             std::cerr << "Failed to parse command." << std::endl;
         }
 
