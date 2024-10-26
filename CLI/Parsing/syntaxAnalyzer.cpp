@@ -1,99 +1,106 @@
 #include "syntaxAnalyzer.hpp"
 
-Token SyntaxAnalyzer::processInput(Token input)
+Command SyntaxAnalyzer::processInput(Token input)
 {
+    static std::string currentOption; // Holds the current option name temporarily
+    static Command cmd;
+
     switch (currentState)
     {
-    case parserStates::Start:
-
+    case ParserStates::Start:
         switch (input.tokenType)
         {
         case Token::Type::Word:
-            currentState = parserStates::Command;
+            currentState = ParserStates::Command;
+            cmd.cmdName = std::get<std::string>(input.value); 
             break;
         default:
-            currentState = parserStates::Error;
+            currentState = ParserStates::Error;
             break;
         }
-
         break;
 
-    case parserStates::Command:
-
+    case ParserStates::Command:
         switch (input.tokenType)
         {
         case Token::Type::Option:
-            currentState = parserStates::Argument;
-            break;
-        case Token::Type::EOC:
-            currentState = parserStates::Finish;
-            break;
-        case Token::Type::Value:
-        case Token::Type::Unknown:
-            currentState = parserStates::Error;
-            break;
-        }
-
-        break;
-
-    case parserStates::Argument:
-
-        switch (input.tokenType)
-        {
-        case Token::Type::EOC:
-            currentState = parserStates::Finish;
+            currentState = ParserStates::Argument;
+            currentOption = std::get<std::string>(input.value); 
             break;
         case Token::Type::Word:
-        case Token::Type::Unknown:
-            currentState = parserStates::Error;
+            cmd.cmdName += " " + std::get<std::string>(input.value); 
+            break;
+        case Token::Type::EOC:
+            currentState = ParserStates::Finish;
+            break;
+        default:
+            currentState = ParserStates::Error;
             break;
         }
-
         break;
 
-        // case parserStates::Finish:
-        //     // uraaa
-        //     break;
+    case ParserStates::Argument:
+        switch (input.tokenType)
+        {
+        case Token::Type::Value:
+            cmd.argList[currentOption] = std::get<double>(input.value);
+            currentState = ParserStates::Command; 
+            break;
+        case Token::Type::EOC:
+            currentState = ParserStates::Finish;
+            break;
+        default:
+            currentState = ParserStates::Error;
+            break;
+        }
+        break;
 
-        // case parserStates::Error:
-        //     std::terminate; // Error message
-        //     break;
+    // case ParserStates::Finish:
+    //     // Command processing is complete; handle finalization if needed
+    //     break;
+
+    // case ParserStates::Error:
+    //     // Handle error logging or cleanup if necessary
+    //     break;
     }
+    
 
-    // printCurrentState();
-    return input;
+    printCurrentState();
+    return cmd;
 }
+
+
 
 void SyntaxAnalyzer::printCurrentState()
 {
     std::cout << "Current State: ";
     switch (currentState)
     {
-    case parserStates::Start:
+    case ParserStates::Start:
         std::cout << "Start";
         break;
-    case parserStates::Command:
+    case ParserStates::Command:
         std::cout << "Command";
         break;
-    case parserStates::Argument:
+    case ParserStates::Argument:
         std::cout << "Argument";
         break;
-    case parserStates::Finish:
+    case ParserStates::Finish:
         std::cout << "Finish";
         break;
-    case parserStates::Error:
+    case ParserStates::Error:
         std::cout << "Error";
         break;
     }
     std::cout << std::endl;
 }
 
-parserStates SyntaxAnalyzer::getCurrentState() const
+ParserStates SyntaxAnalyzer::getCurrentState() const
 {
     return currentState;
 }
 
 void SyntaxAnalyzer::reset()
 {
-    currentState = parserStates::Start; // Reset to the initial state
+    currentState = ParserStates::Start; 
 }

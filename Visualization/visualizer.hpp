@@ -6,6 +6,5 @@
 class Visualizer
 {
 public:
-    void printSlide(std::ostream &outputStream, std::map<Slide, std::vector<std::variant<Circle, Rect, Triangle>>>::iterator slideIt);
-    void printSlides(std::ostream &outputStream, std::map<Slide, std::vector<std::variant<Circle, Rect, Triangle>>> slides);
+    void printSlide(std::ostream &outputStream, std::vector<Slide>::iterator slideIt);
 };

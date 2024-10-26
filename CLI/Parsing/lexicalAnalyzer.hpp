@@ -18,7 +18,7 @@ struct Token
 
 class LexicalAnalyzer
 {
-    bool metOption = false;
+    bool m_metOption = false;
 public:
-    Token getToken(std::string input, int& position);    
+    Token getToken(std::istream &inputStream);    
 };

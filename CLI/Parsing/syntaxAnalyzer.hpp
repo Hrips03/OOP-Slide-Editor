@@ -2,7 +2,7 @@
 #include "../includes.hpp"
 #include "lexicalAnalyzer.hpp"
  
-enum class parserStates
+enum class ParserStates
 {
     Start,
     Command,
@@ -12,17 +12,23 @@ enum class parserStates
 };
 
 
+struct Command{
+    std::string cmdName;
+    std::map<std::string, std::variant<std::string, double>> argList;
+};
+
+
 class SyntaxAnalyzer
 {
 private:
-    parserStates currentState;
-
+    ParserStates currentState;
 public:
-    SyntaxAnalyzer() : currentState(parserStates::Start) {}
+    SyntaxAnalyzer() : currentState(ParserStates::Start) {}
     void reset();
-    Token processInput(Token input);
-    void printCurrentState();
-    parserStates getCurrentState() const;
+    Command processInput(Token input);
+
+    void printCurrentState(); //for me
+    ParserStates getCurrentState() const;
 };
 
 

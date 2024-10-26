@@ -1,5 +1,5 @@
 #include "ICommand.hpp"
 
 
-class help : public ICommand
+class exit : public ICommand
 {};

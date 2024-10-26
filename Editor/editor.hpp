@@ -10,10 +10,9 @@ class Editor
 
 public:
     Editor(std::shared_ptr<Document> document) : doc(document) {}
-    void handler(Command cmd);
 
-    void addSlide(Command cmd);
-    void addCircle(Command cmd);
+    void addSlide(int pos);
+    void addShape(type, geom, attribs);
     void addRect(Command cmd);
     void addTriangle(Command cmd);
 

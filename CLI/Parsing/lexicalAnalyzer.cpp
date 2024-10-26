@@ -1,91 +1,69 @@
 #include "lexicalAnalyzer.hpp"
 
-Token LexicalAnalyzer::getToken(std::string input, int &position)
+Token LexicalAnalyzer::getToken(std::istream &inputStream)
 {
-    // std::cout << "input = " <<input << std::endl;
-    // std::cout << "position = " <<position << std::endl;
+    char ch;
+    while (inputStream.get(ch) && ch == ' ');
 
-    while (position < input.size() && std::isspace(input[position]))
-        position++;
+    if (ch == '\n')
+        return {Token::Type::EOC, {}};
+    
 
-    char currentChar = input[position];
-
-    if (currentChar == '-')
+    if (ch == '-')
     {
-        metOption = true;
-        position++;
         std::string option;
-
-        if (position < input.size() && std::isalpha(input[position]))
+        while (inputStream.get(ch) && (std::isalnum(ch) || ch == '_'))
         {
-            option += input[position];
-            position++;
-
-            while (position < input.size() && std::isalnum(input[position]))
-            {
-                option += input[position];
-                position++;
-            }
-
-            //std::cout << "Token::Type::Option  =  " << option << "\n";
-            return Token{Token::Type::Option, option};
+            option += ch;
         }
-        else
-        {
-            //std::cout << "Token::Type::Unknown  =  " << std::string(1, currentChar) << "\n";
-            return Token{Token::Type::Unknown, std::string(1, currentChar)};
-        }
+        inputStream.putback(ch); 
+        m_metOption = true;
 
+        std::cout << "Token::Type::Option = " << option << std::endl;
+        return {Token::Type::Option, option};
     }
 
-
-    if (std::isdigit(currentChar) || (currentChar == '.' && std::isdigit(input[position + 1])))
-    {
-        std::string numStr;
-        while (position < input.size() && std::isdigit(input[position]))
-        {
-            numStr += input[position];
-            position++;
-        }
-
-        if (position < input.size() && input[position] == '.')
-        {
-            numStr += '.';
-            position++;
-
-            while (position < input.size() && std::isdigit(input[position]))
-            {
-                numStr += input[position];
-                position++;
-            }
-        }
-
-        double value = std::stod(numStr);
-        //std::cout << "Token::Type::Value  =  " << value << "\n";
-        return Token{Token::Type::Value, value};
-    }
-
-    if (std::isalpha(currentChar))
+  
+    if (std::isalpha(ch))
     {
         std::string word;
-        while (position < input.size() && std::isalpha(input[position]))
+        word += ch;
+        while (inputStream.get(ch) && std::isalpha(ch))
         {
-            word += input[position];
-            position++;
+            word += ch;
         }
+        inputStream.putback(ch); 
         
-        if (metOption)
-        {
-            //std::cout << "Token::Type::Value  =  " << word << "\n";
-            return Token{Token::Type::Value, word};
-        }
-        else
-        {
-            //std::cout << "Token::Type::Word  =  " << word << "\n";
-            return Token{Token::Type::Word, word};
-        }
+        std::cout << "Token::Type::Word = " << word << std::endl;
+        return {Token::Type::Word, word};
     }
 
-    //std::cout << "Token::Type::Unknown  =  " << std::string(1, input[position]) << "\n";
-    return Token{Token::Type::EOC, ""};
+
+    if (std::isdigit(ch) || ch == '.')
+    {
+        std::string number;
+        number += ch;
+        bool hasDecimal = (ch == '.');
+        while (inputStream.get(ch))
+        {
+            if (std::isdigit(ch))
+                number += ch;
+            else if (ch == '.' && !hasDecimal)
+            {
+                number += ch;
+                hasDecimal = true;
+            }
+            else
+            {
+                inputStream.putback(ch); 
+                break;
+            }
+        }
+        std::cout << "Token::Type::Value = " << number << std::endl;
+        return {Token::Type::Value, std::stod(number)};
+    }
+
+    //throw std::runtime_error("Unexpected symbol.");
+    std::cout << "Token::Type::Unknown = " << ch << std::endl;
+    return {Token::Type::Unknown, {}};
 }

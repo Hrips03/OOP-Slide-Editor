@@ -3,9 +3,8 @@
 
 class Controller
 {
-    Parser parser; // composition
-
-public:
     bool m_isRunning = true;
+public:
     void run(std::istream &input);
+    void exit();
 };
