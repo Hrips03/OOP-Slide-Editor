@@ -1,6 +1,4 @@
 #pragma once
 #include "slide.hpp"
-#include "circle.hpp"
-#include "triangle.hpp"
-#include "rect.hpp"
+#include "shapes.hpp"
 #include "help.hpp"

@@ -25,16 +25,8 @@ std::map<std::string, std::unique_ptr<ICommand>> CommandCreator::m_CmdPrototypes
 
 std::unique_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
 {
-<<<<<<< HEAD
     // std::string command = std::get<std::string>(tokens[0].value);
     // size_t tokenIndex = 1;
-=======
-    //TK: createCmdPrototypes() called each time, indeed?
-    std::map<std::string, std::vector<std::string>> prototypes = createCmdPrototypes();
-    
-    std::string command = std::get<std::string>(tokens[0].value);
-    size_t tokenIndex = 1;
->>>>>>> 3b9ef6fda2f87c5472f08af14829b53242f1fb23
 
     // if (tokens[1].tokenType == Token::Type::Word)
     // {

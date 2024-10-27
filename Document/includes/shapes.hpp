@@ -1,3 +1,6 @@
+#pragma once
+#include <string>
+
 struct Shape
 {
     enum class ShapeType
@@ -14,9 +17,13 @@ struct Shape
         int size;
     };
 
-    enum class Attributes
+    struct Attributes
     {
-        Color,
-        OutlineColor
+        std::string color;         // Color of the shape
+        std::string outlineColor;  // Outline color of the shape
     };
+
+    ShapeType type; 
+    Geometry geom;
+    Attributes attribs;
 };

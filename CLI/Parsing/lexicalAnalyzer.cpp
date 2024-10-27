@@ -7,23 +7,21 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
 
     if (ch == '\n')
         return {Token::Type::EOC, {}};
-    
 
     if (ch == '-')
     {
+        m_metOption = true;
         std::string option;
-        while (inputStream.get(ch) && (std::isalnum(ch) || ch == '_'))
+        while (inputStream.get(ch) && std::isalpha(ch))
         {
             option += ch;
         }
-        inputStream.putback(ch); 
-        m_metOption = true;
+        inputStream.putback(ch);
 
         std::cout << "Token::Type::Option = " << option << std::endl;
         return {Token::Type::Option, option};
     }
 
-  
     if (std::isalpha(ch))
     {
         std::string word;
@@ -32,12 +30,18 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
         {
             word += ch;
         }
-        inputStream.putback(ch); 
-        
-        std::cout << "Token::Type::Word = " << word << std::endl;
-        return {Token::Type::Word, word};
+        inputStream.putback(ch);
+        if (m_metOption)
+        {
+            std::cout << "Token::Type::Value = " << word << std::endl;
+            return {Token::Type::Value, std::stod(word)};
+        }
+        else
+        {
+            std::cout << "Token::Type::Word = " << word << std::endl;
+            return {Token::Type::Word, word};
+        }
     }
-
 
     if (std::isdigit(ch) || ch == '.')
     {
@@ -55,7 +59,7 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
             }
             else
             {
-                inputStream.putback(ch); 
+                inputStream.putback(ch);
                 break;
             }
         }
@@ -63,7 +67,7 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
         return {Token::Type::Value, std::stod(number)};
     }
 
-    //throw std::runtime_error("Unexpected symbol.");
+    // throw std::runtime_error("Unexpected symbol.");
     std::cout << "Token::Type::Unknown = " << ch << std::endl;
     return {Token::Type::Unknown, {}};
 }

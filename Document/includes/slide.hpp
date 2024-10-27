@@ -1,5 +1,6 @@
 #pragma once
 #include "shapes.hpp"
+#include <vector>
 
 class Slide
 {
