@@ -6,6 +6,9 @@
 //     //std::cout << "Slide is added successfully.\n";
 // }
 
-std::unique_ptr<ICommand> addSlide::clone(std::map<std::string, std::variant<std::string, double>> options) {
-        return std::make_unique<addSlide>(options);
-    }
+addSlide::addSlide(const std::vector<std::string> &args) : arguments(args) {}
+
+std::unique_ptr<ICommand> addSlide::clone() const
+{
+    return std::make_unique<addSlide>(*this);
+}

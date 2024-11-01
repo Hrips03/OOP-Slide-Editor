@@ -1,19 +1,18 @@
 #include "cmdCreator.hpp"
 #include "../Command_Execution/includes/commands.hpp"
+#include "../../Document/includes/shapes.hpp"
 
-
-
-std::map<std::string, std::unique_ptr<ICommand>> CommandCreator::createCmdPrototypes()
+std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototypes()
 {
-    std::map<std::string, std::unique_ptr<ICommand>> optionsMap;
+    std::map<std::string, std::vector<std::string>> optionsMap;
 
-    optionsMap["add slide"] = std::make_unique<addSlide>({"pos"});
-    optionsMap["remove slide"] = std::make_unique<remSlide>({"pos"});
+    optionsMap["add slide"] = {"pos"};
+    optionsMap["remove slide"] = {"pos"};
 
-    optionsMap["add shape"] = std::make_unique<addShape>({ShapeType, Geometry, Attributes});
-    optionsMap["remove shape"] = std::make_unique<remShape>({ShapeType, Geometry, Attributes});
+    optionsMap["add shape"] = {"x", "y", "slide", "col"};
+    optionsMap["remove shape"] = {"x", "y", "slide", "col"};
 
-    optionsMap["print slide"] = std::make_unique<printSlide>({"pos"});
+    optionsMap["print slide"] = {"pos"};
 
     optionsMap["help"];
     optionsMap["exit"];
@@ -21,20 +20,21 @@ std::map<std::string, std::unique_ptr<ICommand>> CommandCreator::createCmdProtot
     return optionsMap;
 }
 
-std::map<std::string, std::unique_ptr<ICommand>> CommandCreator::m_CmdPrototypes = createCmdPrototypes();
+std::map<std::string, std::vector<std::string>> CommandCreator::m_CmdPrototypes = createCmdPrototypes();
+
+std::unordered_map<std::string, std::unique_ptr<ICommand>> prototypeFactory = {
+    {"add slide", std::make_unique<addSlide>()},
+    {"remove slide", std::make_unique<removeSlide>()},
+    {"add shape", std::make_unique<addShape>()},
+    {"remove shape", std::make_unique<removeShape>()},
+    {"print slide", std::make_unique<printSlide>()},
+    // {"exit", std::make_unique<exit>()},
+    {"help", std::make_unique<help>()}
+};
 
 std::unique_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
 {
-    // std::string command = std::get<std::string>(tokens[0].value);
-    // size_t tokenIndex = 1;
-
-    // if (tokens[1].tokenType == Token::Type::Word)
-    // {
-    //     command += " " + std::get<std::string>(tokens[1].value);
-    //     tokenIndex++;
-    // }
-
-    std::string command = cmd.cmdName; 
+    std::string command = cmd.cmdName;
     auto it = m_CmdPrototypes.find(command);
 
     if (it == m_CmdPrototypes.end())
@@ -43,57 +43,21 @@ std::unique_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
         throw std::runtime_error("Unknown command: " + command + ".");
     }
 
-    std::unique_ptr<ICommand> pCmd = it->clone(cmd.argList);
-    return pCmd;
-
-    for (optn : cmd.options)
-        it->option.find(optn)
-
-            std::unique_ptr<ICommand> pCmd = it->second();
-
     std::vector<std::string> expectedOptions = it->second;
-    // std::map<std::string, std::variant<std::string, double>> argumentList;
 
-    // for (const std::string &option : expectedOptions)
-    // {
-    //     if (tokens[tokenIndex].tokenType != Token::Type::Option ||
-    //         !std::holds_alternative<std::string>(tokens[tokenIndex].value) ||
-    //         std::get<std::string>(tokens[tokenIndex].value) != option)
-    //     {
-    //         if (option == "col" && tokens[tokenIndex + 1].tokenType != Token::Type::Value)
-    //             continue;
-    //         throw std::runtime_error("Expected option: '" + option + "' after command: " + command);
-    //     }
+    for (const std::string &option : expectedOptions)
+    {
+        auto it = cmd.argList.find(option);
+        if (it != cmd.argList.end())
+        {
+           return it->second->clone();
+        }
+        else
+        {
+            throw std::invalid_argument("Unknown command type");
+        }
+    }
 
-    //     tokenIndex++;
-
-    //     if (option == "pos" || option == "pos1" || option == "pos2" || option == "slide")
-    //     {
-    //         if (tokenIndex >= tokens.size() ||
-    //             tokens[tokenIndex].tokenType != Token::Type::Value ||
-    //             !std::holds_alternative<double>(tokens[tokenIndex].value))
-    //         {
-    //             throw std::runtime_error("Expected position number after: '" + option + "' command.");
-    //         }
-    //     }
-
-    //     if (option == "col")
-    //     {
-    //         if (tokenIndex >= tokens.size() ||
-    //             tokens[tokenIndex].tokenType != Token::Type::Value ||
-    //             !std::holds_alternative<std::string>(tokens[tokenIndex].value))
-    //         {
-    //             throw std::runtime_error("Expected color name after: '" + option + "' command.");
-    //         }
-    //     }
-    //     argumentList[option] = tokens[tokenIndex].value;
-    //     tokenIndex++;
-    // }
-
-    // // std::cout << "Command is semantically valid for command: " << command << std::endl;
-
-    // Command cmd;
-    // cmd.cmdName = command;
-    // cmd.argList = argumentList;
-    // return cmd;
+    std::unique_ptr<ICommand> pCmd = it->second;
+    return pCmd;
 }

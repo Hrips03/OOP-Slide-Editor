@@ -5,3 +5,5 @@
 #include "addShapeCmd.hpp"
 #include "remShapeCmd.hpp"
 #include "printSlideCmd.hpp"
+#include "exitCmd.hpp"
+#include "helpCmd.hpp"
