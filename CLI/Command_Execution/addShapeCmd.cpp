@@ -1,8 +1,17 @@
 #include "./includes/addShapeCmd.hpp"
 
-addShape::addShape(const std::vector<std::string> &args) : arguments(args) {}
+addShape ::addShape(int slideNum, Shape::ShapeType type, Shape::Geometry geom, Shape::Attributes attrs)
+    : m_slideNumber(slideNum), m_shapeType(type), m_geometry(geom), m_attributes(attrs) {}
 
-std::unique_ptr<ICommand> addShape::clone() const
+void addShape ::execute()
 {
-    return std::make_unique<addShape>(*this); 
+    std::shared_ptr<Document> myDocument = Document::getInstance();
+    Editor editor(myDocument);
+    editor.addShape(m_slideNumber, m_shapeType, m_geometry, m_attributes);
+    //std::cout << "Shape is added successfully to slide " << m_slideNumber << ".\n";
+}
+
+std::shared_ptr<ICommand> addShape::clone() const
+{
+    return std::make_shared<addShape>(*this);
 }

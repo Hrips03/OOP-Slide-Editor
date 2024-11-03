@@ -1,14 +1,16 @@
 #include "./includes/addSlideCmd.hpp"
 
-// void addSlide :: execute(){
-//     std::shared_ptr<Document> myDocument = Document::getInstance();
-//     m_pEditor->addSliude(m_nPosition);
-//     //std::cout << "Slide is added successfully.\n";
-// }
+addSlide::addSlide(int pos) : m_position(pos) {}
 
-addSlide::addSlide(const std::vector<std::string> &args) : arguments(args) {}
-
-std::unique_ptr<ICommand> addSlide::clone() const
+void addSlide ::execute()
 {
-    return std::make_unique<addSlide>(*this);
+    std::shared_ptr<Document> myDocument = Document::getInstance();
+    Editor editor(myDocument);
+    editor.addSlide(m_position);
+    //std::cout << "Slide is added successfully.\n";
+}
+
+std::shared_ptr<ICommand> addSlide::clone() const
+{
+    return std::make_shared<addSlide>(*this);
 }

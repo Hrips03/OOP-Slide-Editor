@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../../../Editor/editor.hpp"
 
-class help : public ICommand
+class printSlides : public ICommand
 {
 public:
     void execute() override;

@@ -1,8 +1,12 @@
 #include "./includes/helpCmd.hpp"
 
-help::help(const std::vector<std::string> &args) : arguments(args) {}
-
-std::unique_ptr<ICommand> help::clone() const
+std::shared_ptr<ICommand> help::clone() const
 {
-    return std::make_unique<help>(*this);
+    return std::make_shared<help>(*this);
+}
+
+void help :: execute(){
+    std::shared_ptr<Document> myDocument = Document::getInstance();
+    Editor editor(myDocument);
+    editor.printHelp();
 }

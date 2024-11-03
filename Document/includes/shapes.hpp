@@ -12,15 +12,18 @@ struct Shape
 
     struct Geometry
     {
-        int x;
-        int y;
-        int size;
+        double x;
+        double y;
+        double height;
+        double width;
     };
 
     struct Attributes
     {
-        std::string color;         // Color of the shape
-        std::string outlineColor;  // Outline color of the shape
+        std::string color;         
+        std::string outlineColor;  
+        // Attributes(const std::string& col = "white", const std::string& outlineCol = "black")
+        //     : color(col), outlineColor(outlineCol) {}
     };
 
     ShapeType type; 

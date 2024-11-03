@@ -3,7 +3,8 @@
 Token LexicalAnalyzer::getToken(std::istream &inputStream)
 {
     char ch;
-    while (inputStream.get(ch) && ch == ' ');
+    while (inputStream.get(ch) && ch == ' ')
+        ;
 
     if (ch == '\n')
         return {Token::Type::EOC, {}};
@@ -17,9 +18,14 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
             option += ch;
         }
         inputStream.putback(ch);
-
-        std::cout << "Token::Type::Option = " << option << std::endl;
-        return {Token::Type::Option, option};
+        if (option != "")
+        {
+            //std::cout << "Token::Type::Option = " << option << std::endl;
+            return {Token::Type::Option, option};
+        }
+        else{
+            return {Token::Type::Unknown, {}};
+        }
     }
 
     if (std::isalpha(ch))
@@ -31,14 +37,15 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
             word += ch;
         }
         inputStream.putback(ch);
+
         if (m_metOption)
         {
-            std::cout << "Token::Type::Value = " << word << std::endl;
-            return {Token::Type::Value, std::stod(word)};
+            //std::cout << "Token::Type::Value = " << word << std::endl;
+            return {Token::Type::Value, word};
         }
         else
         {
-            std::cout << "Token::Type::Word = " << word << std::endl;
+            //std::cout << "Token::Type::Word = " << word << std::endl;
             return {Token::Type::Word, word};
         }
     }
@@ -63,11 +70,10 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
                 break;
             }
         }
-        std::cout << "Token::Type::Value = " << number << std::endl;
+        //std::cout << "Token::Type::Value = " << number << std::endl;
         return {Token::Type::Value, std::stod(number)};
     }
 
-    // throw std::runtime_error("Unexpected symbol.");
-    std::cout << "Token::Type::Unknown = " << ch << std::endl;
+    //std::cout << "Token::Type::Unknown = " << ch << std::endl;
     return {Token::Type::Unknown, {}};
 }

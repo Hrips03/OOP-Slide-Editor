@@ -2,33 +2,32 @@
 
 Command SyntaxAnalyzer::processInput(Token input)
 {
-    static std::string currentOption; // Holds the current option name temporarily
-    static Command cmd;
+    static std::string currentOption;
 
     switch (currentState)
     {
     case ParserStates::Start:
-        switch (input.tokenType)
+        if (input.tokenType == Token::Type::Word)
         {
-        case Token::Type::Word:
             currentState = ParserStates::Command;
-            cmd.cmdName = std::get<std::string>(input.value); 
-            break;
-        default:
+            m_cmd.cmdName = std::get<std::string>(input.value);
+        }
+        else
+        {
             currentState = ParserStates::Error;
-            break;
         }
         break;
 
     case ParserStates::Command:
         switch (input.tokenType)
         {
-        case Token::Type::Option:
-            currentState = ParserStates::Argument;
-            currentOption = std::get<std::string>(input.value); 
-            break;
         case Token::Type::Word:
-            cmd.cmdName += " " + std::get<std::string>(input.value); 
+            m_cmd.cmdName += " " + std::get<std::string>(input.value);
+            break;
+        case Token::Type::Option:
+            currentOption = std::get<std::string>(input.value);
+            m_cmd.argList[currentOption]; 
+            currentState = ParserStates::Argument;
             break;
         case Token::Type::EOC:
             currentState = ParserStates::Finish;
@@ -42,9 +41,15 @@ Command SyntaxAnalyzer::processInput(Token input)
     case ParserStates::Argument:
         switch (input.tokenType)
         {
+        case Token::Type::Option:
+            currentOption = std::get<std::string>(input.value);
+            m_cmd.argList[currentOption]; 
+            break;
         case Token::Type::Value:
-            cmd.argList[currentOption] = std::get<double>(input.value);
-            currentState = ParserStates::Command; 
+            if (auto doublePtr = std::get_if<double>(&input.value))
+                m_cmd.argList[currentOption] = *doublePtr; 
+            else if (auto stringPtr = std::get_if<std::string>(&input.value))
+                m_cmd.argList[currentOption] = *stringPtr; 
             break;
         case Token::Type::EOC:
             currentState = ParserStates::Finish;
@@ -54,21 +59,11 @@ Command SyntaxAnalyzer::processInput(Token input)
             break;
         }
         break;
-
-    // case ParserStates::Finish:
-    //     // Command processing is complete; handle finalization if needed
-    //     break;
-
-    // case ParserStates::Error:
-    //     // Handle error logging or cleanup if necessary
-    //     break;
     }
-    
 
-    printCurrentState();
-    return cmd;
+    //printCurrentState();
+    return m_cmd;
 }
-
 
 
 void SyntaxAnalyzer::printCurrentState()
@@ -102,5 +97,5 @@ ParserStates SyntaxAnalyzer::getCurrentState() const
 
 void SyntaxAnalyzer::reset()
 {
-    currentState = ParserStates::Start; 
+    currentState = ParserStates::Start;
 }

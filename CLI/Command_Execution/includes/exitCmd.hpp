@@ -1,13 +1,18 @@
+#pragma once
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>
+#include "../../../Editor/editor.hpp"
+#include "../../controller.hpp"
 
-class exit : public ICommand
+class Controller;
+
+class exitCmd : public ICommand
 {
-    std::vector<std::string> arguments;
-
+    std::shared_ptr<Controller> m_contr;
 public:
-    exit(const std::vector<std::string> &args);
+    exitCmd() = default;
+    exitCmd(const std::shared_ptr<Controller>& contr);
     void execute() override;
-    std::unique_ptr<ICommand> clone() const override;
+    std::shared_ptr<ICommand> clone() const override;
 };

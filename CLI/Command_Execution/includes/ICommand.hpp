@@ -8,5 +8,5 @@ class ICommand
 public:
     virtual void execute() = 0;
     virtual ~ICommand() = default;
-    virtual std::unique_ptr<ICommand> clone() const = 0;
+    virtual std::shared_ptr<ICommand> clone() const = 0;
 };

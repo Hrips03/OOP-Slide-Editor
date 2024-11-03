@@ -1,8 +1,13 @@
 #include "./includes/exitCmd.hpp"
 
-exit::exit(const std::vector<std::string> &args) : arguments(args) {}
+exitCmd::exitCmd(const std::shared_ptr<Controller>& contr) : m_contr(contr) {}
 
-std::unique_ptr<ICommand> exit::clone() const
+std::shared_ptr<ICommand> exitCmd::clone() const
 {
-    return std::make_unique<exit>(*this);
+    return std::make_shared<exitCmd>(*this);
+}
+
+void exitCmd :: execute(){
+    std::cout << "Executing exit command...\n";
+    m_contr->exit();
 }

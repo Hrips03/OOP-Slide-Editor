@@ -1,7 +1,7 @@
 #pragma once
 #include "../Document/includes/includes.hpp"
 #include "../Document/includes/document.hpp"
-
+#include "../Visualization/visualizer.hpp"
 
 class Editor
 {
@@ -18,6 +18,6 @@ public:
     
     void printHelp();
 
-    // void printSlide(Command cmd);
-    // void printSlides();
+    void printSlide(int pos);
+    void printSlides();
 };

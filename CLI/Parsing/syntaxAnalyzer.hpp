@@ -21,6 +21,7 @@ struct Command{
 class SyntaxAnalyzer
 {
 private:
+    Command m_cmd;
     ParserStates currentState;
 public:
     SyntaxAnalyzer() : currentState(ParserStates::Start) {}

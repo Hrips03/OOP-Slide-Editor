@@ -1,24 +1,18 @@
 #pragma once
 #include "syntaxAnalyzer.hpp"
-// #include "../includes.hpp"
 #include <memory>
 #include <map>
-#include <vector>
 #include <iostream>
 #include "../Command_Execution/includes/ICommand.hpp"
 #include "../Command_Execution/includes/commands.hpp"
-// struct Command{
-//     std::string cmdName;
-//     std::map<std::string, std::variant<std::string, double>> argList;
-// };
+#include <unordered_map>
+#include <functional>
 
-class CommandCreator
-{
-    static std::map<std::string, std::vector<std::string>> m_CmdPrototypes;
+
+
+class CommandCreator {
 public:
-    std::unique_ptr<ICommand> Create(Command);
-    void Register(std::unique_ptr<ICommand>);
-
-    std::unique_ptr<ICommand> semanticAnalizer(Command);
     static std::map<std::string, std::vector<std::string>> createCmdPrototypes();
+    static std::shared_ptr<ICommand> semanticAnalizer(Command cmd);
+    static std::map<std::string, std::vector<std::string>> m_CmdPrototypes;    
 };

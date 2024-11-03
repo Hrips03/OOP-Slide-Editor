@@ -1,14 +1,13 @@
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>
+#include "../../../Editor/editor.hpp"
 
 class removeSlide : public ICommand
 {
+    int m_position;
 public:
-    std::vector<std::string> arguments;
-
-public:
-    removeSlide(const std::vector<std::string> &args);
+    removeSlide(int pos);
     void execute() override;
-    std::unique_ptr<ICommand> clone() const override;
+    std::shared_ptr<ICommand> clone() const override;
 };
