@@ -1,8 +1,11 @@
 #include "syntaxAnalyzer.hpp"
 
+#include "syntaxAnalyzer.hpp"
+
 Command SyntaxAnalyzer::processInput(Token input)
 {
     static std::string currentOption;
+    static bool expectingValue = false;
 
     switch (currentState)
     {
@@ -27,6 +30,7 @@ Command SyntaxAnalyzer::processInput(Token input)
         case Token::Type::Option:
             currentOption = std::get<std::string>(input.value);
             m_cmd.argList[currentOption]; 
+            expectingValue = true;
             currentState = ParserStates::Argument;
             break;
         case Token::Type::EOC:
@@ -42,29 +46,40 @@ Command SyntaxAnalyzer::processInput(Token input)
         switch (input.tokenType)
         {
         case Token::Type::Option:
+            if (expectingValue) {
+                currentState = ParserStates::Error;
+                throw std::invalid_argument("Missing required value for option: " + currentOption);
+            }
             currentOption = std::get<std::string>(input.value);
             m_cmd.argList[currentOption]; 
+            expectingValue = true;
             break;
         case Token::Type::Value:
-            if (auto doublePtr = std::get_if<double>(&input.value))
-                m_cmd.argList[currentOption] = *doublePtr; 
-            else if (auto stringPtr = std::get_if<std::string>(&input.value))
-                m_cmd.argList[currentOption] = *stringPtr; 
+            if (expectingValue) {
+                if (auto doublePtr = std::get_if<double>(&input.value))
+                    m_cmd.argList[currentOption] = *doublePtr; 
+                else if (auto stringPtr = std::get_if<std::string>(&input.value))
+                    m_cmd.argList[currentOption] = *stringPtr; 
+                expectingValue = false; 
+            } else {
+                currentState = ParserStates::Error;
+                throw std::invalid_argument("Unexpected value without option.");
+            }
             break;
         case Token::Type::EOC:
+            if (expectingValue) {
+                currentState = ParserStates::Error;
+                throw std::invalid_argument("Missing required value for option: " + currentOption);
+            }
             currentState = ParserStates::Finish;
-            break;
-        default:
-            currentState = ParserStates::Error;
             break;
         }
         break;
     }
 
-    //printCurrentState();
+    printCurrentState();
     return m_cmd;
 }
-
 
 void SyntaxAnalyzer::printCurrentState()
 {

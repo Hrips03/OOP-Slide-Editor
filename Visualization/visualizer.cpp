@@ -10,8 +10,8 @@ void Visualizer::printSlide(std::ostream &out, std::vector<Slide>::iterator slid
         out << "  Shape: ";
         switch (shape.type)
         {
-        case Shape::ShapeType::Circle:
-            out << "Circle";
+        case Shape::ShapeType::Ellipse:
+            out << "Ellipse";
             break;
         case Shape::ShapeType::Rectangle:
             out << "Rectangle";

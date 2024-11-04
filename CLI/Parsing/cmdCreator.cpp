@@ -30,8 +30,8 @@ T getArgValueOrDefault(const Command &cmd, const std::string &key, const T &defa
 
 Shape::ShapeType stringToShapeType(const std::string &typeStr)
 {
-    if (typeStr == "Circle" || typeStr == "circle" )
-        return Shape::ShapeType::Circle;
+    if (typeStr == "Ellipse" || typeStr == "ellipse" )
+        return Shape::ShapeType::Ellipse;
     else if (typeStr == "Rectangle" || typeStr == "rectangle" )
         return Shape::ShapeType::Rectangle;
     else if (typeStr == "Triangle" || typeStr == "triangle")
@@ -61,7 +61,7 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
          Shape::Attributes attrs = {
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
-         Shape::ShapeType shapeType = stringToShapeType(getArgValueOrDefault<std::string>(cmd, "type", "Circle"));
+         Shape::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<addShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
              shapeType,
@@ -79,7 +79,7 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
 
-         Shape::ShapeType shapeType = stringToShapeType(getArgValueOrDefault<std::string>(cmd, "type", "Circle"));
+         Shape::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<removeShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
              shapeType,

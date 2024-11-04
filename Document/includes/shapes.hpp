@@ -5,7 +5,7 @@ struct Shape
 {
     enum class ShapeType
     {
-        Circle,
+        Ellipse,
         Rectangle,
         Triangle
     };

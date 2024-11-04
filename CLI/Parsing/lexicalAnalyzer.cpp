@@ -13,14 +13,14 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
     {
         m_metOption = true;
         std::string option;
-        while (inputStream.get(ch) && std::isalpha(ch))
+        while (inputStream.get(ch) && std::isalnum(ch))
         {
             option += ch;
         }
         inputStream.putback(ch);
         if (option != "")
         {
-            //std::cout << "Token::Type::Option = " << option << std::endl;
+            std::cout << "Token::Type::Option = " << option << std::endl;
             return {Token::Type::Option, option};
         }
         else{
