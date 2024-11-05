@@ -100,7 +100,7 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
          return std::make_shared<help>();
      }},
      {"exit", [](const Command &) {
-        return std::make_shared<exitCmd>();  // Pass the controller
+        return std::make_shared<exitCmd>(Controller::exitPtr);
     }}
     };
 
@@ -125,7 +125,7 @@ std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
         {
             if (option == "col" || option == "outlineCol" || option == "height" || option == "width")
                 continue;
-            throw std::invalid_argument("Missing required option: " + option);
+            throw std::runtime_error("Missing required option: " + option);
         }
 
         // const auto &value = argIt->second;
@@ -139,8 +139,8 @@ std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
 
     for (const auto &arg : cmd.argList)
         if (std::find(expectedOptions.begin(), expectedOptions.end(), arg.first) == expectedOptions.end())
-            throw std::invalid_argument("Unexpected option: " + arg.first);
+            throw std::runtime_error("Unexpected option: " + arg.first);
 
-    std::cout << "Command is semantically correct\n";
+    //std::cout << "Command is semantically correct\n";
     return prototypeFactory.at(command)(cmd);
 }

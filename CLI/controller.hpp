@@ -7,4 +7,5 @@ class Controller
 public:
     void run(std::istream &input);
     void exit();
+    static std::shared_ptr<Controller> exitPtr;
 };

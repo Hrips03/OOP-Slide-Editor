@@ -14,21 +14,6 @@ std::shared_ptr<ICommand> Parser::parse(std::istream &inputStream)
         {
             token = lexicalAnalyzer.getToken(inputStream);
             cmd = syntaxAnalyzer.processInput(token);
-
-            if (syntaxAnalyzer.getCurrentState() == ParserStates::Error)
-            {
-                if (token.tokenType == Token::Type::Unknown)
-                {
-                    std::cerr << "Unknown symbol: ";
-                    std::visit([](const auto &v)
-                               { std::cerr << v << std::endl; }, token.value);
-                
-                    //throw std::invalid_argument("");
-                    return nullptr;
-                }
-                throw std::invalid_argument("Unexpected value without option.");
-                return nullptr;
-            }
         }
     }
     catch (const std::invalid_argument &e)
@@ -55,11 +40,6 @@ std::shared_ptr<ICommand> Parser::parse(std::istream &inputStream)
     catch (const std::runtime_error &e)
     {
         std::cerr << "Semantic analysis error: " << e.what() << std::endl;
-        return nullptr;
-    }
-    catch (const std::invalid_argument &e)
-    {
-        std::cerr << "Syntax analysis error: " << e.what() << std::endl;
         return nullptr;
     }
 

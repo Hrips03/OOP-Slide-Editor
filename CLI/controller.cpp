@@ -1,10 +1,11 @@
 #include "controller.hpp"
 #include "./Command_Execution/includes/exitCmd.hpp"
 
+std::shared_ptr<Controller> Controller::exitPtr = nullptr;
 
 void Controller::run(std::istream &inputStream)
 {
-    exitCmd(std::make_shared<Controller>(*this));
+    //exitCmd(std::make_shared<Controller>(*this));
 
     while (m_isRunning)
     {

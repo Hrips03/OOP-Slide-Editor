@@ -20,7 +20,7 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
         inputStream.putback(ch);
         if (option != "")
         {
-            std::cout << "Token::Type::Option = " << option << std::endl;
+            //std::cout << "Token::Type::Option = " << option << std::endl;
             return {Token::Type::Option, option};
         }
         else{
