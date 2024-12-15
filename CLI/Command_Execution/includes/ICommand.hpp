@@ -2,6 +2,8 @@
 #include <memory>
 #include <map>
 #include <variant>
+#include "../../../Editor/IAction.hpp"
+#include "../../../Editor/editor.hpp"
 
 class ICommand
 {

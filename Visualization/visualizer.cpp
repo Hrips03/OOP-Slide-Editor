@@ -5,18 +5,18 @@
 void Visualizer::printSlide(std::ostream &out, std::vector<Slide>::iterator slideIt, size_t slideIndex)
 {
     out << "Slide " << slideIndex << ":\n";  
-    for (const auto &shape : slideIt->shapes)
+    for (const auto &shape : slideIt->items)
     {
         out << "  Shape: ";
         switch (shape.type)
         {
-        case Shape::ShapeType::Ellipse:
+        case Item::ShapeType::Ellipse:
             out << "Ellipse";
             break;
-        case Shape::ShapeType::Rectangle:
+        case Item::ShapeType::Rectangle:
             out << "Rectangle";
             break;
-        case Shape::ShapeType::Triangle:
+        case Item::ShapeType::Triangle:
             out << "Triangle";
             break;
         }

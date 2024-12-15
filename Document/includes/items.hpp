@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-struct Shape
+struct Item
 {
     enum class ShapeType
     {

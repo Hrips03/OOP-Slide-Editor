@@ -1,16 +1,16 @@
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>
-#include "../../../Editor/editor.hpp"
+#include "../../../Document/includes/document.hpp"
 
 class addShape : public ICommand
 {
     int m_slideNumber; 
-    Shape::ShapeType m_shapeType;
-    Shape::Geometry m_geometry;
-    Shape::Attributes m_attributes;
+    Item::ShapeType m_shapeType;
+    Item::Geometry m_geometry;
+    Item::Attributes m_attributes;
 public:
-    addShape(int slideNum, Shape::ShapeType type, Shape::Geometry geom, Shape::Attributes attrs);
+    addShape(int slideNum, Item::ShapeType type, Item::Geometry geom, Item::Attributes attrs);
     void execute() override;
     std::shared_ptr<ICommand> clone() const override;
 };

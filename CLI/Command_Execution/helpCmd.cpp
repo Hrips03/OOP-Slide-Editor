@@ -7,6 +7,5 @@ std::shared_ptr<ICommand> help::clone() const
 
 void help :: execute(){
     std::shared_ptr<Document> myDocument = Document::getInstance();
-    Editor editor(myDocument);
-    editor.printHelp();
+    myDocument->printHelp();
 }

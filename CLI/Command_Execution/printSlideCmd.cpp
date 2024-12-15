@@ -4,8 +4,7 @@ printSlide::printSlide(int pos) : m_position(pos) {}
 
 void printSlide :: execute(){
     std::shared_ptr<Document> myDocument = Document::getInstance();
-    Editor editor(myDocument);
-    editor.printSlide(m_position);
+    myDocument->printSlide(m_position);
     //std::cout << "Printing the slide.\n";
 }
 

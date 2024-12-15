@@ -1,7 +1,7 @@
 #include "ICommand.hpp"
-#include "../../../Editor/editor.hpp"
 #include <vector>
 #include <iostream>
+#include "../../../Editor/addSlideAction.hpp"
 
 class addSlide : public ICommand
 {

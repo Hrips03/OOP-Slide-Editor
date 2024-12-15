@@ -1,23 +1,30 @@
 #pragma once
-#include "../Document/includes/includes.hpp"
+#include <stack>
+#include <iostream>
+#include "IAction.hpp"
 #include "../Document/includes/document.hpp"
-#include "../Visualization/visualizer.hpp"
 
 class Editor
 {
-    std::shared_ptr<Document> m_doc;
+    // Editor();
+
+    // Editor(const Editor &) = delete;
+    // Editor &operator=(const Editor &) = delete;
+
+    // Editor(const Editor &&) = delete;
+    // Editor &&operator=(const Editor &&) = delete;
+
+    // static std::shared_ptr<Editor> instance;
+
+    std::stack<std::shared_ptr<IAction>> undoStack;
+    std::stack<std::shared_ptr<IAction>> redoStack;
+    std::shared_ptr<Document> doc;
 
 public:
-    Editor(std::shared_ptr<Document> document) : m_doc(document) {}
+    //static std::shared_ptr<Editor> getInstance();
+    std::shared_ptr<Document> getDocument();
 
-    void addSlide(int pos);
-    void remSlide(int pos);
-
-    void addShape(int slideNumber, Shape::ShapeType, Shape::Geometry, Shape::Attributes);    
-    void remShape(int slideNumber, Shape::ShapeType, Shape::Geometry, Shape::Attributes);
-    
-    void printHelp();
-
-    void printSlide(int pos);
-    void printSlides();
+    void process(std::shared_ptr<IAction> act);
+    void undo();
+    void redo();
 };

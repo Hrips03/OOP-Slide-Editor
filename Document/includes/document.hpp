@@ -3,8 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <memory>
-#include <map>
-#include <variant>
+#include "../../Visualization/visualizer.hpp"
+
 
 class Document
 {
@@ -21,4 +21,16 @@ class Document
 public:
     std::vector<Slide> slides;
     static std::shared_ptr<Document> getInstance();
+
+    void addSlide(int pos);
+    void remSlide(int pos);
+
+    void addShape(int slideNumber, Item::ShapeType, Item::Geometry, Item::Attributes);    
+    void remShape(int slideNumber, Item::ShapeType, Item::Geometry, Item::Attributes);
+    
+    void printHelp();
+
+    void printSlide(int pos);
+    void printSlides();
+
 };

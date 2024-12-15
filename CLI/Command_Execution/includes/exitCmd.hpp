@@ -2,7 +2,7 @@
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>
-#include "../../../Editor/editor.hpp"
+#include "../../../Document/includes/document.hpp"
 #include "../../controller.hpp"
 
 class Controller;

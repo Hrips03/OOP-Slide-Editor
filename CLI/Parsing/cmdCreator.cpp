@@ -12,6 +12,8 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["print slides"] = {};
     optionsMap["help"] = {};
     optionsMap["exit"] = {};
+    optionsMap["undo"] = {};
+    optionsMap["redo"] = {};    
 
     return optionsMap;
 }
@@ -28,14 +30,14 @@ T getArgValueOrDefault(const Command &cmd, const std::string &key, const T &defa
     return defaultValue;
 }
 
-Shape::ShapeType stringToShapeType(const std::string &typeStr)
+Item::ShapeType stringToShapeType(const std::string &typeStr)
 {
     if (typeStr == "Ellipse" || typeStr == "ellipse" )
-        return Shape::ShapeType::Ellipse;
+        return Item::ShapeType::Ellipse;
     else if (typeStr == "Rectangle" || typeStr == "rectangle" )
-        return Shape::ShapeType::Rectangle;
+        return Item::ShapeType::Rectangle;
     else if (typeStr == "Triangle" || typeStr == "triangle")
-        return Shape::ShapeType::Triangle;
+        return Item::ShapeType::Triangle;
 
     throw std::invalid_argument("Invalid shape type: " + typeStr);
 }
@@ -53,15 +55,15 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
      }},
     {"add shape", [](const Command &cmd)
      {
-         Shape::Geometry geom = {
+         Item::Geometry geom = {
              std::get<double>(cmd.argList.at("x")),
              std::get<double>(cmd.argList.at("y")),
              getArgValueOrDefault(cmd, "height", 10.0),
              getArgValueOrDefault(cmd, "width", 10.0)};
-         Shape::Attributes attrs = {
+         Item::Attributes attrs = {
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
-         Shape::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
+         Item::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<addShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
              shapeType,
@@ -70,16 +72,16 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
      }},
     {"remove shape", [](const Command &cmd)
      {
-         Shape::Geometry geom = {
+         Item::Geometry geom = {
              std::get<double>(cmd.argList.at("x")),
              std::get<double>(cmd.argList.at("y")),
              getArgValueOrDefault(cmd, "height", 10.0),
              getArgValueOrDefault(cmd, "width", 10.0)};
-         Shape::Attributes attrs = {
+         Item::Attributes attrs = {
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
 
-         Shape::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
+         Item::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<removeShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
              shapeType,

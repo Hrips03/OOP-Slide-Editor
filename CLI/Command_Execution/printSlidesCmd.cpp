@@ -2,8 +2,7 @@
 
 void printSlides :: execute(){
     std::shared_ptr<Document> myDocument = Document::getInstance();
-    Editor editor(myDocument);
-    editor.printSlides();
+    myDocument->printSlides();
     //std::cout << "Printing slides.\n";
 }
 

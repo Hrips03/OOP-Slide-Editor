@@ -1,9 +1,9 @@
 #pragma once
-#include "shapes.hpp"
+#include "items.hpp"
 #include <vector>
 
 class Slide
 {
 public:
-    std::vector<Shape> shapes;
+    std::vector<Item> items;
 };
