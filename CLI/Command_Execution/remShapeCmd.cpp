@@ -1,7 +1,7 @@
 #include "./includes/remShapeCmd.hpp"
 
-removeShape ::removeShape(int slideNum, Item::ShapeType type, Item::Geometry geom, Item::Attributes attrs)
-    : m_slideNumber(slideNum), m_shapeType(type), m_geometry(geom), m_attributes(attrs) {}
+removeShape ::removeShape(int slideNum, std::shared_ptr<Item> item)
+    : m_slideNumber(slideNum), m_item(item) {}
 
 std::shared_ptr<ICommand> removeShape::clone() const
 {
@@ -9,7 +9,6 @@ std::shared_ptr<ICommand> removeShape::clone() const
 }
 
 void removeShape :: execute(){
-    std::shared_ptr<Document> myDocument = Document::getInstance();
-    myDocument->remShape(m_slideNumber, m_shapeType, m_geometry, m_attributes);
-    //std::cout << "Shape is removed successfully from slide " << m_slideNumber << ".\n";
+    std::shared_ptr<IAction> action = std::make_shared<removeShapeAct>(m_slideNumber, m_item);
+    Editor::getInstance()->process(action);
 }

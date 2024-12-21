@@ -1,7 +1,7 @@
 #pragma once
 #include "../includes.hpp"
 #include "lexicalAnalyzer.hpp"
- 
+
 enum class ParserStates
 {
     Start,

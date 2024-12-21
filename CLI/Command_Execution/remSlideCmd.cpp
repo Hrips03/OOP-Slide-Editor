@@ -5,7 +5,7 @@ removeSlide::removeSlide(int pos) : m_position(pos) {}
 void removeSlide ::execute()
 {
     std::shared_ptr<IAction> action = std::make_shared<removeSlideAct>(m_position);
-    Editor{}.process(action);
+    Editor::getInstance()->process(action);
 }
 
 std::shared_ptr<ICommand> removeSlide::clone() const

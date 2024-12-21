@@ -13,10 +13,11 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["help"] = {};
     optionsMap["exit"] = {};
     optionsMap["undo"] = {};
-    optionsMap["redo"] = {};    
+    optionsMap["redo"] = {};
 
     return optionsMap;
 }
+
 std::map<std::string, std::vector<std::string>> CommandCreator::m_CmdPrototypes = CommandCreator::createCmdPrototypes();
 
 template <typename T>
@@ -32,9 +33,9 @@ T getArgValueOrDefault(const Command &cmd, const std::string &key, const T &defa
 
 Item::ShapeType stringToShapeType(const std::string &typeStr)
 {
-    if (typeStr == "Ellipse" || typeStr == "ellipse" )
+    if (typeStr == "Ellipse" || typeStr == "ellipse")
         return Item::ShapeType::Ellipse;
-    else if (typeStr == "Rectangle" || typeStr == "rectangle" )
+    else if (typeStr == "Rectangle" || typeStr == "rectangle")
         return Item::ShapeType::Rectangle;
     else if (typeStr == "Triangle" || typeStr == "triangle")
         return Item::ShapeType::Triangle;
@@ -55,38 +56,35 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
      }},
     {"add shape", [](const Command &cmd)
      {
-         Item::Geometry geom = {
+        std::shared_ptr<Item> item = std::make_shared<Item>();
+         item->geom = {
              std::get<double>(cmd.argList.at("x")),
              std::get<double>(cmd.argList.at("y")),
              getArgValueOrDefault(cmd, "height", 10.0),
              getArgValueOrDefault(cmd, "width", 10.0)};
-         Item::Attributes attrs = {
+         item->attribs = {
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
-         Item::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
+         item->type = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<addShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
-             shapeType,
-             geom,
-             attrs);
+             item);
      }},
     {"remove shape", [](const Command &cmd)
      {
-         Item::Geometry geom = {
+         std::shared_ptr<Item> item = std::make_shared<Item>();
+         item->geom = {
              std::get<double>(cmd.argList.at("x")),
              std::get<double>(cmd.argList.at("y")),
              getArgValueOrDefault(cmd, "height", 10.0),
              getArgValueOrDefault(cmd, "width", 10.0)};
-         Item::Attributes attrs = {
+         item->attribs = {
              getArgValueOrDefault<std::string>(cmd, "col", "white"),
              getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
-
-         Item::ShapeType shapeType = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
+         item->type = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
          return std::make_shared<removeShape>(
              static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
-             shapeType,
-             geom,
-             attrs);
+             item);
      }},
     {"print slide", [](const Command &cmd)
      {
@@ -101,11 +99,18 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
      {
          return std::make_shared<help>();
      }},
-     {"exit", [](const Command &) {
-        return std::make_shared<exitCmd>(Controller::exitPtr);
-    }}
-    };
-
+    {"exit", [](const Command &)
+     {
+         return std::make_shared<exitCmd>(Controller::exitPtr);
+     }},
+    {"undo", [](const Command &)
+     {
+         return std::make_shared<UndoCmd>();
+     }},
+    {"redo", [](const Command &)
+     {
+         return std::make_shared<RedoCmd>();
+     }}};
 
 
 std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
@@ -138,11 +143,10 @@ std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
         //     if (std::get<std::string>(value).empty())
         //         throw std::invalid_argument("Option '" + option + "' cannot be empty.");
     }
-
+    
     for (const auto &arg : cmd.argList)
         if (std::find(expectedOptions.begin(), expectedOptions.end(), arg.first) == expectedOptions.end())
             throw std::runtime_error("Unexpected option: " + arg.first);
 
-    //std::cout << "Command is semantically correct\n";
     return prototypeFactory.at(command)(cmd);
 }

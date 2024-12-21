@@ -1,16 +1,14 @@
 #include "./includes/addShapeCmd.hpp"
 
-addShape ::addShape(int slideNum, Item::ShapeType type, Item::Geometry geom, Item::Attributes attrs)
-    : m_slideNumber(slideNum), m_shapeType(type), m_geometry(geom), m_attributes(attrs) {}
+addShape ::addShape(int slideNum, std::shared_ptr<Item> item)
+    : m_slideNumber(slideNum), m_item(item) {}
+
 
 void addShape ::execute()
-{
-    
-
-
-    std::shared_ptr<Document> myDocument = Document::getInstance();
-    myDocument->addShape(m_slideNumber, m_shapeType, m_geometry, m_attributes);
-    //std::cout << "Shape is added successfully to slide " << m_slideNumber << ".\n";
+{ 
+    std::shared_ptr<Item> newItem = m_item;
+    std::shared_ptr<IAction> action = std::make_shared<addShapeAct>(m_slideNumber, newItem);
+    Editor::getInstance()->process(action);
 }
 
 std::shared_ptr<ICommand> addShape::clone() const

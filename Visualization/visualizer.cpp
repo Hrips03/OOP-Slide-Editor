@@ -5,9 +5,10 @@
 void Visualizer::printSlide(std::ostream &out, std::vector<Slide>::iterator slideIt, size_t slideIndex)
 {
     out << "Slide " << slideIndex << ":\n";  
-    for (const auto &shape : slideIt->items)
+    size_t shapeIndex = 0; // Counter for shape index
+    for (const auto& shape : slideIt->items)
     {
-        out << "  Shape: ";
+        out << "  Shape " << shapeIndex << ": "; // Print the shape's index
         switch (shape.type)
         {
         case Item::ShapeType::Ellipse:
@@ -25,9 +26,11 @@ void Visualizer::printSlide(std::ostream &out, std::vector<Slide>::iterator slid
             << " | Width: " << shape.geom.width
             << " | Color: " << shape.attribs.color
             << " | Outline Color: " << shape.attribs.outlineColor << "\n";
+        ++shapeIndex; // Increment the shape index
     }
     out << "---------------------\n";
 }
+
 
 
 

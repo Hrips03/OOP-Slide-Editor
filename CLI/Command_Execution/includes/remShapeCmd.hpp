@@ -2,15 +2,14 @@
 #include <vector>
 #include <iostream>
 #include "../../../Document/includes/document.hpp"
+#include "../../../Editor/removeShapeAct.hpp"
 
 class removeShape : public ICommand
 {    
     int m_slideNumber;            
-    Item::ShapeType m_shapeType; 
-    Item::Geometry m_geometry;   
-    Item::Attributes m_attributes;
+    std::shared_ptr<Item> m_item; 
 public:
-    removeShape(int slideNum, Item::ShapeType type, Item::Geometry geom, Item::Attributes attrs);
+    removeShape(int slideNum, std::shared_ptr<Item> item);
     void execute() override;
     std::shared_ptr<ICommand> clone() const override;
 };

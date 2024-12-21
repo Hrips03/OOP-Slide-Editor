@@ -25,8 +25,8 @@ public:
     void addSlide(int pos);
     void remSlide(int pos);
 
-    void addShape(int slideNumber, Item::ShapeType, Item::Geometry, Item::Attributes);    
-    void remShape(int slideNumber, Item::ShapeType, Item::Geometry, Item::Attributes);
+    void addShape(int slideNumber, std::shared_ptr<Item>);    
+    void remShape(int slideNumber, std::shared_ptr<Item>);
     
     void printHelp();
 

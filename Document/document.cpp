@@ -2,7 +2,7 @@
 
 Document::Document()
 {
-    std::cout << "Instance of Document is created!\n";
+    //std::cout << "Instance of Document is created!\n";
 }
 
 std::shared_ptr<Document> Document::getInstance()
@@ -43,7 +43,7 @@ void Document::remSlide(int position)
         std::cerr << "Error: Position " << position << " is out of bounds.\n" << std::endl;
 }
 
-void Document::addShape(int slideNumber, Item::ShapeType shapeType, Item::Geometry geometry, Item::Attributes attributes)
+void Document::addShape(int slideNumber, std::shared_ptr<Item> item)
 {
     if (slideNumber < 0 || slideNumber >= slides.size())
     {
@@ -53,15 +53,15 @@ void Document::addShape(int slideNumber, Item::ShapeType shapeType, Item::Geomet
     else
     {
         Item shape;
-        shape.type = shapeType;
-        shape.geom = geometry;
-        shape.attribs = attributes;
+        shape.type = item->type;
+        shape.geom = item->geom;
+        shape.attribs = item->attribs;
         slides[slideNumber].items.push_back(shape);
         std::cout << "Shape added to slide " << slideNumber << " successfully.\n" << std::endl;
     }
 }
 
-void Document::remShape(int slideNumber, Item::ShapeType shapeType, Item::Geometry geometry, Item::Attributes attributes)
+void Document::remShape(int slideNumber, std::shared_ptr<Item> item)
 {
     if (slideNumber < 0 || slideNumber >= slides.size())
     {
@@ -74,13 +74,13 @@ void Document::remShape(int slideNumber, Item::ShapeType shapeType, Item::Geomet
         bool shapeFound = false;
         for (auto it = shapes.begin(); it != shapes.end();)
         {
-            if (it->type == shapeType &&
-                it->geom.x == geometry.x &&
-                it->geom.y == geometry.y &&
-                it->geom.height == geometry.height &&
-                it->geom.width == geometry.width &&
-                it->attribs.color == attributes.color &&
-                it->attribs.outlineColor == attributes.outlineColor)
+            if (it->type == item->type &&
+                it->geom.x == item->geom.x &&
+                it->geom.y == item->geom.y &&
+                it->geom.height == item->geom.height &&
+                it->geom.width == item->geom.width &&
+                it->attribs.color == item->attribs.color &&
+                it->attribs.outlineColor == item->attribs.outlineColor)
             {
                 it = shapes.erase(it);
                 shapeFound = true;

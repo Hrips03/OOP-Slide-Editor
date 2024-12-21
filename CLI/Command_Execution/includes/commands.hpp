@@ -8,3 +8,5 @@
 #include "printSlidesCmd.hpp"
 #include "exitCmd.hpp"
 #include "helpCmd.hpp"
+#include "undoCmd.hpp"
+#include "redoCmd.hpp"
