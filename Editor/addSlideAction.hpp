@@ -7,9 +7,8 @@
 class addSlideAct : public IAction
 {
     std::shared_ptr<Slide> m_slide;
-    int m_pos;
 public:
-    addSlideAct(std::shared_ptr<Slide> newSlide, int pos);
+    addSlideAct(std::shared_ptr<Slide> newSlide);
     std::shared_ptr<IAction> doAction() override;
     virtual ~addSlideAct() = default;
 };

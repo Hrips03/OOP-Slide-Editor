@@ -4,8 +4,8 @@ addSlide::addSlide(int pos) : m_position(pos) {}
 
 void addSlide ::execute()
 {
-    std::shared_ptr<Slide> newSlide = std::make_shared<Slide>();
-    std::shared_ptr<IAction> action = std::make_shared<addSlideAct>(newSlide, m_position);
+    std::shared_ptr<Slide> newSlide = std::make_shared<Slide>(m_position);
+    std::shared_ptr<IAction> action = std::make_shared<addSlideAct>(newSlide);
     Editor::getInstance()->process(action);
 }
 

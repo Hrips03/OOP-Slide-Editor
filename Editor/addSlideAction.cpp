@@ -1,10 +1,16 @@
 #include "addSlideAction.hpp"
 
-addSlideAct::addSlideAct(std::shared_ptr<Slide> newSlide, int pos) : m_slide(newSlide), m_pos(pos) {}
+addSlideAct::addSlideAct(std::shared_ptr<Slide> newSlide) : m_slide(newSlide) {}
 
 std::shared_ptr<IAction> addSlideAct::doAction()
 {
     std::shared_ptr<Document> myDocument = Document::getInstance();
-    myDocument->addSlide(m_pos);
-    return std::make_shared<removeSlideAct>(m_pos);
+    int pos = m_slide->getPosition();
+    if(myDocument->slides.size() < pos){
+        m_slide->setPosition(myDocument->slides.size());
+        pos = myDocument->slides.size();
+    }
+
+    myDocument->addSlide(m_slide);
+    return std::make_shared<removeSlideAct>(pos);
 }

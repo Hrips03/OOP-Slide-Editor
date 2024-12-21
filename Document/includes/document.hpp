@@ -19,10 +19,10 @@ class Document
     static std::shared_ptr<Document> instance;
 
 public:
-    std::vector<Slide> slides;
+    std::vector<std::shared_ptr<Slide>> slides;
     static std::shared_ptr<Document> getInstance();
 
-    void addSlide(int pos);
+    void addSlide(std::shared_ptr<Slide> slide);
     void remSlide(int pos);
 
     void addShape(int slideNumber, std::shared_ptr<Item>);    

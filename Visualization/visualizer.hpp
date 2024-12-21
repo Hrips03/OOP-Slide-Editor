@@ -6,6 +6,6 @@
 class Visualizer
 {
 public:
-    void printSlide(std::ostream &out, std::vector<Slide>::iterator slideIt, size_t slideIndex);
-    void printSlides(std::ostream &out, std::vector<Slide> &slides);
+    void printSlide(std::ostream &out, std::shared_ptr<Slide> slide, size_t slideIndex);
+    void printSlides(std::ostream &out, const std::vector<std::shared_ptr<Slide>>& slides);
 };

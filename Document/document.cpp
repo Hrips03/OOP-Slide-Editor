@@ -17,19 +17,11 @@ std::shared_ptr<Document> Document::getInstance()
 std::shared_ptr<Document> Document::instance = nullptr;
 
 
-void Document::addSlide(int position)
+void Document::addSlide(std::shared_ptr<Slide> slide)
 {
-    if (position >= 0 && position <= static_cast<int>(slides.size()))
-    {
-        slides.insert(slides.begin() + position, Slide{});
-        std::cout << "Slide is succesfully added at position " << position << ".\n" << std::endl;
-    }
-    else
-    {
-        std::cout << "Position " << position << " is out of bounds. Adding at position " << slides.size() << "." << std::endl;
-        std::cout << "Slide is succesfully added at position " << slides.size() << ".\n" << std::endl;
-        slides.push_back(Slide{});
-    }
+    int position = slide->getPosition();   
+    slides.insert(slides.begin() + position, slide);
+    std::cout << "Slide is succesfully added at position " << position << ".\n" << std::endl;
 }
 
 void Document::remSlide(int position)
@@ -56,7 +48,7 @@ void Document::addShape(int slideNumber, std::shared_ptr<Item> item)
         shape.type = item->type;
         shape.geom = item->geom;
         shape.attribs = item->attribs;
-        slides[slideNumber].items.push_back(shape);
+        slides[slideNumber]->items.push_back(shape);
         std::cout << "Shape added to slide " << slideNumber << " successfully.\n" << std::endl;
     }
 }
@@ -70,7 +62,7 @@ void Document::remShape(int slideNumber, std::shared_ptr<Item> item)
     }
     else
     {
-        auto &shapes = slides[slideNumber].items;
+        auto &shapes = slides[slideNumber]->items;
         bool shapeFound = false;
         for (auto it = shapes.begin(); it != shapes.end();)
         {
@@ -123,17 +115,21 @@ void Document::printSlide(int pos)
     std::advance(slideIt, pos);
 
     Visualizer visual;
-    visual.printSlide(std::cout, slideIt, pos);
+    visual.printSlide(std::cout, *slideIt, pos);
 }
+
 
 void Document::printSlides()
 {
     if (slides.size() > 0)
     {
         Visualizer visual;
-        visual.printSlides(std::cout, slides);
+        visual.printSlides(std::cout, slides);  
     }
     else
-        std::cout << "There are no slides to be printed\n" <<std::endl;
+    {
+        std::cout << "There are no slides to be printed\n" << std::endl;
+    }
 }
+
 
