@@ -23,8 +23,7 @@ std::shared_ptr<Document> Editor::getDocument(){
 
 void Editor::process(std::shared_ptr<IAction> act){
     undoStack.push(act->doAction());
-    //redoStack.clear();
-    //redoStack.empty();
+    std::stack<std::shared_ptr<IAction>>().swap(redoStack);
 }
 
 void Editor::undo(){

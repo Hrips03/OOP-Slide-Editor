@@ -6,6 +6,5 @@ std::shared_ptr<IAction> addSlideAct::doAction()
 {
     std::shared_ptr<Document> myDocument = Document::getInstance();
     myDocument->addSlide(m_pos);
-    std::cout << "Slide is added successfully.\n";
     return std::make_shared<removeSlideAct>(m_pos);
 }

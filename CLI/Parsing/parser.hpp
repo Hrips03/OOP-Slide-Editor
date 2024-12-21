@@ -1,12 +1,12 @@
 #pragma once
 #include "syntaxAnalyzer.hpp"
 #include "cmdCreator.hpp"
-
+#include <limits>
 
 class Parser
 {
-    SyntaxAnalyzer syntaxAnalyzer;   // compostion
-    LexicalAnalyzer lexicalAnalyzer; // compostion
+    SyntaxAnalyzer syntaxAnalyzer;   
+    LexicalAnalyzer lexicalAnalyzer;
 public:
     std::shared_ptr<ICommand> parse(std::istream &inputStream);
 };

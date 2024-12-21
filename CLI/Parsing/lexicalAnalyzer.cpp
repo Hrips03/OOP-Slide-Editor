@@ -3,8 +3,7 @@
 Token LexicalAnalyzer::getToken(std::istream &inputStream)
 {
     char ch;
-    while (inputStream.get(ch) && ch == ' ')
-        ;
+    while (inputStream.get(ch) && ch == ' ');
 
     if (ch == '\n')
         return {Token::Type::EOC, {}};

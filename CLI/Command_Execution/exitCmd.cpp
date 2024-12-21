@@ -8,6 +8,5 @@ std::shared_ptr<ICommand> exitCmd::clone() const
 }
 
 void exitCmd :: execute(){
-    //std::cout << "Executing exit command...\n";
     m_contr->exit();
 }
