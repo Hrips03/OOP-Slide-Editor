@@ -7,9 +7,9 @@
 class removeShapeAct : public IAction
 {
     int m_slideID;
-    std::shared_ptr<Item> m_item;
+    int m_itemID;
 public:
-    removeShapeAct(int slide, std::shared_ptr<Item> item);
+    removeShapeAct(int slideNum, int itemNum);
     std::shared_ptr<IAction> doAction() override;
     virtual ~removeShapeAct() = default;
 };

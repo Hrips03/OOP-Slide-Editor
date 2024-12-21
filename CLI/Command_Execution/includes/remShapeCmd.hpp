@@ -7,9 +7,9 @@
 class removeShape : public ICommand
 {    
     int m_slideNumber;            
-    std::shared_ptr<Item> m_item; 
+    int m_itemNum; 
 public:
-    removeShape(int slideNum, std::shared_ptr<Item> item);
+    removeShape(int slideNum, int itemNum);
     void execute() override;
     std::shared_ptr<ICommand> clone() const override;
 };

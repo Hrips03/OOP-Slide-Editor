@@ -22,8 +22,6 @@ struct Item
     {
         std::string color;         
         std::string outlineColor;  
-        // Attributes(const std::string& col = "white", const std::string& outlineCol = "black")
-        //     : color(col), outlineColor(outlineCol) {}
     };
 
     ShapeType type; 

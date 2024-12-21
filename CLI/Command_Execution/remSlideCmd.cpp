@@ -1,6 +1,6 @@
 #include "./includes/remSlideCmd.hpp"
 
-removeSlide::removeSlide(int pos) : m_position(pos) {}
+removeSlide::removeSlide(int pos) : m_position(pos){}
 
 void removeSlide ::execute()
 {

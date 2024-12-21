@@ -3,6 +3,7 @@
 #include "../Document/includes/slide.hpp"
 #include "../Document/includes/document.hpp"
 #include "removeShapeAct.hpp"
+#include <algorithm>
 
 class addShapeAct : public IAction
 {

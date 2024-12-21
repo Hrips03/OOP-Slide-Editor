@@ -53,7 +53,7 @@ void Document::addShape(int slideNumber, std::shared_ptr<Item> item)
     }
 }
 
-void Document::remShape(int slideNumber, std::shared_ptr<Item> item)
+void Document::remShape(int slideNumber, int itemNumber)
 {
     if (slideNumber < 0 || slideNumber >= slides.size())
     {
@@ -63,31 +63,11 @@ void Document::remShape(int slideNumber, std::shared_ptr<Item> item)
     else
     {
         auto &shapes = slides[slideNumber]->items;
-        bool shapeFound = false;
-        for (auto it = shapes.begin(); it != shapes.end();)
-        {
-            if (it->type == item->type &&
-                it->geom.x == item->geom.x &&
-                it->geom.y == item->geom.y &&
-                it->geom.height == item->geom.height &&
-                it->geom.width == item->geom.width &&
-                it->attribs.color == item->attribs.color &&
-                it->attribs.outlineColor == item->attribs.outlineColor)
-            {
-                it = shapes.erase(it);
-                shapeFound = true;
-                std::cout << "Shape removed from slide " << slideNumber << " successfully.\n" << std::endl;
-            }
-            else
-            {
-                ++it;
-            }
-        }
-
-        if (!shapeFound)
-            std::cout << "No shape found with the specified attributes on slide " << slideNumber << ".\n" << std::endl;
+        shapes.erase(shapes.begin() + itemNumber);
+        std::cout << "Shape removed from slide " << slideNumber << " successfully.\n" << std::endl;
     }
 }
+
 
 void Document::printHelp()
 {

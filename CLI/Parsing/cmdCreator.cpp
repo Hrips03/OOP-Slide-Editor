@@ -7,7 +7,7 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["add slide"] = {"pos"};
     optionsMap["remove slide"] = {"pos"};
     optionsMap["add shape"] = {"x", "y", "type", "slide", "height", "width", "col", "outlineCol"};
-    optionsMap["remove shape"] = {"index"};
+    optionsMap["remove shape"] = {"slide", "shape"};
     optionsMap["print slide"] = {"pos"};
     optionsMap["print slides"] = {};
     optionsMap["help"] = {};
@@ -111,19 +111,9 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
      {
          try
          {
-             std::shared_ptr<Item> item = std::make_shared<Item>();
-             item->geom = {
-                 std::get<double>(cmd.argList.at("x")),
-                 std::get<double>(cmd.argList.at("y")),
-                 getArgValueOrDefault(cmd, "height", 10.0),
-                 getArgValueOrDefault(cmd, "width", 10.0)};
-             item->attribs = {
-                 getArgValueOrDefault<std::string>(cmd, "col", "white"),
-                 getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
-             item->type = stringToShapeType(std::get<std::string>(cmd.argList.at("type")));
              return std::make_shared<removeShape>(
                  static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
-                 item);
+                 static_cast<int>(std::get<double>(cmd.argList.at("shape"))));
          }
          catch (const std::out_of_range &e)
          {

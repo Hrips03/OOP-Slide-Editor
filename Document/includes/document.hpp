@@ -26,7 +26,7 @@ public:
     void remSlide(int pos);
 
     void addShape(int slideNumber, std::shared_ptr<Item>);    
-    void remShape(int slideNumber, std::shared_ptr<Item>);
+    void remShape(int slideNumber, int itemNumber);
     
     void printHelp();
 
