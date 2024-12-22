@@ -20,7 +20,8 @@ void Visualizer::printSlide(std::ostream &out, std::shared_ptr<Slide> slide, siz
             out << "Triangle";
             break;
         }
-        out << " | Position: (" << shape.geom.x << ", " << shape.geom.y << ")"
+        out << " | X: " << shape.geom.x 
+            << " | Y: " << shape.geom.y 
             << " | Height: " << shape.geom.height
             << " | Width: " << shape.geom.width
             << " | Color: " << shape.attribs.color
@@ -29,8 +30,6 @@ void Visualizer::printSlide(std::ostream &out, std::shared_ptr<Slide> slide, siz
     }
     out << "---------------------\n";
 }
-
-
 
 
 void Visualizer::printSlides(std::ostream &out, const std::vector<std::shared_ptr<Slide>>& slides)

@@ -1,0 +1,9 @@
+Slide 0:
+  Shape 0: Ellipse | X: 6 | Y: 6 | Height: 10 | Width: 10 | Color: white | Outline Color: black
+  Shape 1: Rectangle | X: 0 | Y: 0 | Height: 11 | Width: 11 | Color: white | Outline Color: black
+---------------------
+Slide 1:
+---------------------
+Slide 2:
+  Shape 0: Triangle | X: 0 | Y: 0 | Height: 10 | Width: 10 | Color: green | Outline Color: yellow
+---------------------

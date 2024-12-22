@@ -4,11 +4,12 @@
 #include <iostream>
 #include "../../../Document/includes/document.hpp"
 
-class help : public ICommand
+class saveCmd : public ICommand
 {
+    std::string m_fileName;
     std::shared_ptr<Document> m_doc = nullptr;
 public:
-    help();
+    saveCmd(std::string fileName);
     void execute() override;
     std::shared_ptr<ICommand> clone() const override;
 };

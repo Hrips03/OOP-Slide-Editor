@@ -11,3 +11,5 @@
 #include "undoCmd.hpp"
 #include "redoCmd.hpp"
 #include "changeGeom.hpp"
+#include "saveCmd.hpp"
+#include "loadCmd.hpp"

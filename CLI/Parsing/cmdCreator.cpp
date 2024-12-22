@@ -11,6 +11,8 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["change geom"] = {"slide", "shape", "x", "y", "height", "width"};
     optionsMap["print slide"] = {"pos"};
     optionsMap["print slides"] = {};
+    optionsMap["save"] = {"fileName"};
+    optionsMap["load"] = {"fileName"};
     optionsMap["help"] = {};
     optionsMap["exit"] = {};
     optionsMap["undo"] = {};
@@ -174,6 +176,14 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
     {"help", [](const Command &)
      {
          return std::make_shared<help>();
+     }},
+     {"save", [](const Command &cmd)
+     {
+         return std::make_shared<saveCmd>(std::get<std::string>(cmd.argList.at("fileName")));
+     }},
+     {"load", [](const Command &cmd)
+     {
+         return std::make_shared<loadCmd>(std::get<std::string>(cmd.argList.at("fileName")));
      }},
     {"exit", [](const Command &)
      {

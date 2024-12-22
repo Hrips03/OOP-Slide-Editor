@@ -4,6 +4,12 @@
 #include <iostream>
 #include <memory>
 #include "../../Visualization/visualizer.hpp"
+#include <fstream>
+#include <filesystem>
+#include <sstream>
+#include <algorithm>  // For std::replace
+#include <string>     // For std::string
+#include <sstream>    // For std::istringstream
 
 class Document
 {
@@ -18,6 +24,9 @@ public:
     void remShape(int slideNumber, int itemNumber);
 
     void changeGeom(int slideNum, int itemNum, Item::Geometry itemGeom, Item::Attributes itemAttribs);
+
+    void save(const std::string& fileName);
+    void load(const std::string& fileName);
 
     void printHelp();
 

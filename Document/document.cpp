@@ -77,8 +77,87 @@ void Document::changeGeom(int slideNum, int itemNum, Item::Geometry itemGeom, It
     else if (shape.attribs.outlineColor != itemAttribs.outlineColor)
         shape.attribs.outlineColor = itemAttribs.outlineColor;
 
-    std::cout << "Shape's geometry changed successfully.\n" <<std::endl;
+    std::cout << "Shape's geometry changed successfully.\n"
+              << std::endl;
 }
+
+void Document::save(const std::string& fileName) {
+    std::string dir = "./Saved_Files/";
+    std::filesystem::create_directories(dir); // Ensure the directory exists
+
+    std::string filename = dir + fileName + ".txt";
+
+    std::ofstream file(filename, std::ios::out); // Use std::ios::out for normal writing
+
+    if (file.is_open()) {
+        size_t slideIndex = 0; // Start from Slide 0
+        Visualizer visualizer;
+
+        for (const auto& slide : slides) {
+            visualizer.printSlide(file, slide, slideIndex++); // Save slides using the updated format
+        }
+
+        file.close();
+        std::cout << "Document saved to " << filename << "!\n";
+    } else {
+        std::cerr << "Error: Could not open file for writing at " << filename << ".\n";
+    }
+}
+
+void Document::load(const std::string& fileName) {
+    std::string dir = "./Saved_Files/";
+    std::string filename = dir + fileName + ".txt";
+
+    std::ifstream file(filename, std::ios::in);
+
+    if (file.is_open()) {
+        slides.clear(); // Clear existing slides
+        std::shared_ptr<Slide> currentSlide = nullptr;
+
+        std::string line;
+        while (std::getline(file, line)) {
+            if (line.find("Slide") == 0) { // Start of a new slide
+                size_t position = slides.size(); // Determine position for the new slide
+                currentSlide = std::make_shared<Slide>(position);
+                slides.push_back(currentSlide);
+            } else if (line.find("  Shape") == 0 && currentSlide != nullptr) {
+                Item shape;
+                std::istringstream iss(line);
+
+                std::string temp;
+                char colon;
+
+                // Parse shape type
+                iss >> temp >> temp >> colon; // Skip "Shape <index>:"
+                if (temp == "Ellipse") shape.type = Item::ShapeType::Ellipse;
+                else if (temp == "Rectangle") shape.type = Item::ShapeType::Rectangle;
+                else if (temp == "Triangle") shape.type = Item::ShapeType::Triangle;
+
+                // Parse shape attributes
+                while (iss >> temp) {
+                    if (temp == "X:") iss >> shape.geom.x;
+                    else if (temp == "Y:") iss >> shape.geom.y;
+                    else if (temp == "Height:") iss >> shape.geom.height;
+                    else if (temp == "Width:") iss >> shape.geom.width;
+                    else if (temp == "Color:") iss >> shape.attribs.color;
+                    else if (temp == "Outline") {
+                        iss >> temp; // Skip "Color:"
+                        iss >> shape.attribs.outlineColor;
+                    }
+                }
+
+                // Add the parsed shape to the current slide
+                currentSlide->items.push_back(shape);
+            }
+        }
+
+        file.close();
+        std::cout << "Document loaded successfully from " << filename << "!\n";
+    } else {
+        std::cerr << "Error: Could not open file for reading at " << filename << ".\n";
+    }
+}
+
 
 void Document::printHelp()
 {
