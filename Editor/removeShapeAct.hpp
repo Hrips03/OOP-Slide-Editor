@@ -8,6 +8,7 @@ class removeShapeAct : public IAction
 {
     int m_slideID;
     int m_itemID;
+    std::shared_ptr<Document> m_doc = nullptr;
 public:
     removeShapeAct(int slideNum, int itemNum);
     std::shared_ptr<IAction> doAction() override;

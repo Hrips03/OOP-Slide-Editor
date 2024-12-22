@@ -1,12 +1,12 @@
 #include "addShapeAction.hpp"
 
-addShapeAct::addShapeAct(int slide, std::shared_ptr<Item> item) : m_slideID(slide), m_item(item) {}
+addShapeAct::addShapeAct(int slide, std::shared_ptr<Item> item) : m_slideID(slide), m_item(item) {
+    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+}
 
 std::shared_ptr<IAction> addShapeAct::doAction()
 {
-    std::shared_ptr<Document> myDocument = Document::getInstance();
-
-    auto &shapes = myDocument->slides[m_slideID]->items;
+    auto &shapes = m_doc->slides[m_slideID]->items;
     int itemID = 0;
     for (size_t i = 0; i < shapes.size(); ++i)
     {
@@ -22,6 +22,6 @@ std::shared_ptr<IAction> addShapeAct::doAction()
         }
     }
 
-    myDocument->addShape(m_slideID, m_item);
+    m_doc->addShape(m_slideID, m_item);
     return std::make_shared<removeShapeAct>(m_slideID, itemID);
 }

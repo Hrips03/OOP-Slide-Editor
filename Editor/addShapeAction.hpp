@@ -9,6 +9,7 @@ class addShapeAct : public IAction
 {
     int m_slideID;
     std::shared_ptr<Item> m_item;
+    std::shared_ptr<Document> m_doc = nullptr;
 public:
     addShapeAct(int slide, std::shared_ptr<Item> item);
     std::shared_ptr<IAction> doAction() override;

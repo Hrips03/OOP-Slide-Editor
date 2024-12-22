@@ -1,10 +1,12 @@
 #include "./includes/printSlideCmd.hpp"
 
-printSlide::printSlide(int pos) : m_position(pos) {}
+printSlide::printSlide(int pos) : m_position(pos) {
+    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+}
 
 void printSlide :: execute(){
-    std::shared_ptr<Document> myDocument = Document::getInstance();
-    myDocument->printSlide(m_position);
+    //std::shared_ptr<Document> myDocument = Document::getInstance();
+    m_doc->printSlide(m_position);
 }
 
 std::shared_ptr<ICommand> printSlide::clone() const

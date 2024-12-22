@@ -8,6 +8,7 @@ class removeShape : public ICommand
 {    
     int m_slideNumber;            
     int m_itemNum; 
+    std::shared_ptr<Editor> m_editor = nullptr;
 public:
     removeShape(int slideNum, int itemNum);
     void execute() override;

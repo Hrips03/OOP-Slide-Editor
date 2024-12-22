@@ -7,6 +7,7 @@
 class removeSlide : public ICommand
 {
     int m_position;
+    std::shared_ptr<Editor> m_editor = nullptr;
 public:
     removeSlide(int pos);
     void execute() override;

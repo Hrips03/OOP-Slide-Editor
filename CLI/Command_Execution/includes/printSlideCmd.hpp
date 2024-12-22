@@ -6,6 +6,7 @@
 class printSlide : public ICommand
 {
     int m_position;
+    std::shared_ptr<Document> m_doc = nullptr;
 public:
     printSlide(int pos);
     void execute() override;

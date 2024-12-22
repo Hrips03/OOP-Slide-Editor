@@ -1,8 +1,11 @@
 #include "./includes/undoCmd.hpp"
 
+UndoCmd::UndoCmd(){
+    std::shared_ptr<Editor> m_editor = std::shared_ptr<Editor>(new Editor());
+}
 void UndoCmd ::execute()
 {
-    Editor::getInstance()->undo();
+    m_editor->undo();
 }
 
 std::shared_ptr<ICommand> UndoCmd::clone() const

@@ -7,6 +7,7 @@
 class addSlide : public ICommand
 {
     int m_position; 
+    std::shared_ptr<Editor> m_editor = nullptr;
 public:
     addSlide(int pos);
     void execute() override;

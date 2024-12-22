@@ -5,7 +5,9 @@
 
 class printSlides : public ICommand
 {
+    std::shared_ptr<Document> m_doc = nullptr;
 public:
+    printSlides();
     void execute() override;
     std::shared_ptr<ICommand> clone() const override;
 };
