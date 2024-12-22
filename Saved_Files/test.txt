@@ -1,9 +1,9 @@
 Slide 0:
-  Shape 0: Ellipse | X: 6 | Y: 6 | Height: 10 | Width: 10 | Color: white | Outline Color: black
-  Shape 1: Rectangle | X: 0 | Y: 0 | Height: 11 | Width: 11 | Color: white | Outline Color: black
+  Shape 0: Ellipse | CenterX: 10 | CenterY: 10 | Horizontal Radius (a): 10 | Vertical Radius (b): 10 | Color: white | Outline Color: black
 ---------------------
 Slide 1:
+  Shape 0: Rectangle | PositionX: 0 | PositionY: 0 | Width: 12 | Height: 12 | Color: white | Outline Color: black
 ---------------------
 Slide 2:
-  Shape 0: Triangle | X: 0 | Y: 0 | Height: 10 | Width: 10 | Color: green | Outline Color: yellow
+  Shape 0: Triangle | Side 1 (Left): 11.1803 | Side 2 (Rigth): 11.1803 | Side 3 (Base): 10 | Color: pink | Outline Color: blue
 ---------------------

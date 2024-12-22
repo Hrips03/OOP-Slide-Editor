@@ -104,6 +104,19 @@ void Document::save(const std::string& fileName) {
     }
 }
 
+// std::shared_ptr<IShape> Document::createShapeFromItem(const Item& item) {
+//     switch (item.type) {
+//         case Item::ShapeType::Ellipse:
+//             return std::make_shared<Ellipse>(item);  // Pass the parsed Item to the Ellipse constructor
+//         case Item::ShapeType::Rectangle:
+//             return std::make_shared<Rectangle>(item);  // Pass the parsed Item to the Rectangle constructor
+//         case Item::ShapeType::Triangle:
+//             return std::make_shared<Triangle>(item);  // Pass the parsed Item to the Triangle constructor
+//         default:
+//             throw std::invalid_argument("Unknown shape type");
+//     }
+// }
+
 void Document::load(const std::string& fileName) {
     std::string dir = "./Saved_Files/";
     std::string filename = dir + fileName + ".txt";
@@ -116,12 +129,15 @@ void Document::load(const std::string& fileName) {
 
         std::string line;
         while (std::getline(file, line)) {
+            std::cout << "Reading line: " << line << std::endl;  // Debugging line read
+
             if (line.find("Slide") == 0) { // Start of a new slide
                 size_t position = slides.size(); // Determine position for the new slide
                 currentSlide = std::make_shared<Slide>(position);
                 slides.push_back(currentSlide);
+                std::cout << "New slide created: " << position << std::endl;  // Debugging slide creation
             } else if (line.find("  Shape") == 0 && currentSlide != nullptr) {
-                Item shape;
+                Item item;
                 std::istringstream iss(line);
 
                 std::string temp;
@@ -129,25 +145,69 @@ void Document::load(const std::string& fileName) {
 
                 // Parse shape type
                 iss >> temp >> temp >> colon; // Skip "Shape <index>:"
-                if (temp == "Ellipse") shape.type = Item::ShapeType::Ellipse;
-                else if (temp == "Rectangle") shape.type = Item::ShapeType::Rectangle;
-                else if (temp == "Triangle") shape.type = Item::ShapeType::Triangle;
+                if (temp == "Ellipse") {
+                    item.type = Item::ShapeType::Ellipse;
+                    std::cout << "Parsing Ellipse shape" << std::endl;  // Debugging shape type
 
-                // Parse shape attributes
-                while (iss >> temp) {
-                    if (temp == "X:") iss >> shape.geom.x;
-                    else if (temp == "Y:") iss >> shape.geom.y;
-                    else if (temp == "Height:") iss >> shape.geom.height;
-                    else if (temp == "Width:") iss >> shape.geom.width;
-                    else if (temp == "Color:") iss >> shape.attribs.color;
-                    else if (temp == "Outline") {
-                        iss >> temp; // Skip "Color:"
-                        iss >> shape.attribs.outlineColor;
+                    // Parse Ellipse attributes
+                    while (iss >> temp) {
+                        if (temp == "CenterX:") iss >> item.geom.x; // This is the center X
+                        else if (temp == "CenterY:") iss >> item.geom.y; // This is the center Y
+                        else if (temp == "Horizontal") iss >> temp >> item.geom.width; // Horizontal radius (width)
+                        else if (temp == "Vertical") iss >> temp >> item.geom.height; // Vertical radius (height)
+                        else if (temp == "Color:") iss >> item.attribs.color;
+                        else if (temp == "Outline") {
+                            iss >> temp; // Skip "Color:"
+                            iss >> item.attribs.outlineColor;
+                        }
                     }
-                }
 
-                // Add the parsed shape to the current slide
-                currentSlide->items.push_back(shape);
+                    // Add Ellipse to the current slide
+                    currentSlide->items.push_back(item);
+                    std::cout << "Added Ellipse to slide" << std::endl;  // Debugging shape added
+                }
+                else if (temp == "Rectangle") {
+                    item.type = Item::ShapeType::Rectangle;
+                    std::cout << "Parsing Rectangle shape" << std::endl;  // Debugging shape type
+
+                    // Parse Rectangle attributes
+                    while (iss >> temp) {
+                        if (temp == "PositionX:") iss >> item.geom.x;
+                        else if (temp == "PositionY:") iss >> item.geom.y;
+                        else if (temp == "Width:") iss >> item.geom.width;
+                        else if (temp == "Height:") iss >> item.geom.height;
+                        else if (temp == "Color:") iss >> item.attribs.color;
+                        else if (temp == "Outline") {
+                            iss >> temp; // Skip "Color:"
+                            iss >> item.attribs.outlineColor;
+                        }
+                    }
+
+                    // Add Rectangle to the current slide
+                    currentSlide->items.push_back(item);
+                    std::cout << "Added Rectangle to slide" << std::endl;  // Debugging shape added
+                }
+                else if (temp == "Triangle") {
+                    item.type = Item::ShapeType::Triangle;
+                    std::cout << "Parsing Triangle shape" << std::endl;  // Debugging shape type
+
+                    // Parse Triangle attributes
+                    while (iss >> temp) {
+                        if (temp == "Side") {
+                            if (temp == "1") iss >> temp >> item.geom.width; // Left side
+                            else if (temp == "2") iss >> temp >> item.geom.height; // Right side
+                            else if (temp == "3") iss >> temp >> item.attribs.color; // Base side
+                        } else if (temp == "Color:") iss >> item.attribs.color;
+                        else if (temp == "Outline") {
+                            iss >> temp; // Skip "Color:"
+                            iss >> item.attribs.outlineColor;
+                        }
+                    }
+
+                    // Add Triangle to the current slide
+                    currentSlide->items.push_back(item);
+                    std::cout << "Added Triangle to slide" << std::endl;  // Debugging shape added
+                }
             }
         }
 
@@ -157,6 +217,7 @@ void Document::load(const std::string& fileName) {
         std::cerr << "Error: Could not open file for reading at " << filename << ".\n";
     }
 }
+
 
 
 void Document::printHelp()

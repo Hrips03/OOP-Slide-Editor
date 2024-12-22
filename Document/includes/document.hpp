@@ -10,6 +10,10 @@
 #include <algorithm>  // For std::replace
 #include <string>     // For std::string
 #include <sstream>    // For std::istringstream
+#include "../../Visualization/Shapes/IShape.hpp"
+#include "../../Visualization/Shapes/Ellipse.hpp"
+#include "../../Visualization/Shapes/Rectangle.hpp"
+#include "../../Visualization/Shapes/Triangle.hpp"
 
 class Document
 {
@@ -27,6 +31,7 @@ public:
 
     void save(const std::string& fileName);
     void load(const std::string& fileName);
+    std::shared_ptr<IShape> createShapeFromItem(const Item& item);
 
     void printHelp();
 
