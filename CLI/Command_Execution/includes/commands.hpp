@@ -10,3 +10,4 @@
 #include "helpCmd.hpp"
 #include "undoCmd.hpp"
 #include "redoCmd.hpp"
+#include "changeGeom.hpp"

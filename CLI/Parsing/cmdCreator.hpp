@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <functional>
 #include "../controller.hpp"
-
+#include <unordered_set>
 
 class CommandCreator {
 public:

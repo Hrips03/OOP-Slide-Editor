@@ -8,6 +8,7 @@ std::map<std::string, std::vector<std::string>> CommandCreator::createCmdPrototy
     optionsMap["remove slide"] = {"pos"};
     optionsMap["add shape"] = {"x", "y", "type", "slide", "height", "width", "col", "outlineCol"};
     optionsMap["remove shape"] = {"slide", "shape"};
+    optionsMap["change geom"] = {"slide", "shape", "x", "y", "height", "width"};
     optionsMap["print slide"] = {"pos"};
     optionsMap["print slides"] = {};
     optionsMap["help"] = {};
@@ -84,8 +85,8 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
          {
              std::shared_ptr<Item> item = std::make_shared<Item>();
              item->geom = {
-                 std::get<double>(cmd.argList.at("x")),
-                 std::get<double>(cmd.argList.at("y")),
+                 getArgValueOrDefault(cmd, "x", 0.0),
+                 getArgValueOrDefault(cmd, "y", 0.0),
                  getArgValueOrDefault(cmd, "height", 10.0),
                  getArgValueOrDefault(cmd, "width", 10.0)};
              item->attribs = {
@@ -123,6 +124,33 @@ std::unordered_map<std::string, std::function<std::shared_ptr<ICommand>(const Co
          {
              throw std::runtime_error("Error: One of the arguments for 'remove shape' is of the wrong type. "
                                       "Expected 'x' and 'y' as doubles, 'type' as string, and 'slide' as double.");
+         }
+     }},
+
+    {"change geom", [](const Command &cmd)
+     {
+         try
+         {
+             Item::Geometry itemGeom;
+             itemGeom = {
+                 getArgValueOrDefault(cmd, "x", 0.0),
+                 getArgValueOrDefault(cmd, "y", 0.0),
+                 getArgValueOrDefault(cmd, "height", 0.0),
+                 getArgValueOrDefault(cmd, "width", 0.0)};
+
+            Item::Attributes itemAttrs;
+            itemAttrs = {
+                 getArgValueOrDefault<std::string>(cmd, "col", "white"),
+                 getArgValueOrDefault<std::string>(cmd, "outlineCol", "black")};
+             return std::make_shared<changeGeometry>(
+                 static_cast<int>(std::get<double>(cmd.argList.at("slide"))),
+                 static_cast<int>(std::get<double>(cmd.argList.at("shape"))),
+                 itemGeom, itemAttrs);
+         }
+         catch (const std::bad_variant_access &)
+         {
+             throw std::runtime_error("Error: One of the arguments for 'change geom' is of the wrong type. "
+                                      "Expected doubles.");
          }
      }},
 
@@ -177,23 +205,36 @@ std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
         auto argIt = cmd.argList.find(option);
         if (argIt == cmd.argList.end())
         {
-            if (option == "col" || option == "outlineCol" || option == "height" || option == "width")
+            // Skip optional arguments
+            if (option == "col" || option == "outlineCol" || option == "height" || option == "width" || option == "x" || option == "y")
                 continue;
+
             throw std::runtime_error("Missing required option: " + option);
         }
 
-        // const auto &value = argIt->second;
+        const auto &value = argIt->second;
 
-        // if (std::holds_alternative<double>(value))
-        //     continue;
-        // else if (std::holds_alternative<std::string>(value))
-        //     if (std::get<std::string>(value).empty())
-        //         throw std::invalid_argument("Option '" + option + "' cannot be empty.");
+        if (std::holds_alternative<double>(value))
+            continue;
+        else if (std::holds_alternative<std::string>(value))
+            if (std::get<std::string>(value).empty())
+                throw std::invalid_argument("Option '" + option + "' cannot be empty.");
     }
 
     for (const auto &arg : cmd.argList)
+    {
         if (std::find(expectedOptions.begin(), expectedOptions.end(), arg.first) == expectedOptions.end())
+        {
+            // Skip optional arguments
+            static const std::unordered_set<std::string> optionalArgs = {"x", "y", "height", "width", "col", "outlineCol"};
+            if (optionalArgs.find(arg.first) != optionalArgs.end())
+            {
+                continue;
+            }
+
             throw std::runtime_error("Unexpected option: " + arg.first);
+        }
+    }
 
     return prototypeFactory.at(command)(cmd);
 }
