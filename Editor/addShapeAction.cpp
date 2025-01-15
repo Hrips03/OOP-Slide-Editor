@@ -22,6 +22,6 @@ std::shared_ptr<IAction> addShapeAct::doAction()
         }
     }
 
-    m_doc->addShape(m_slideID, m_item);
+    m_doc->addShape(m_slideID, m_item); 
     return std::make_shared<removeShapeAct>(m_slideID, itemID);
 }

@@ -10,7 +10,7 @@ std::shared_ptr<ICommand> Parser::parse(std::istream &inputStream)
 
     try
     {
-        while (token.tokenType != Token::Type::EOC)
+        while (syntaxAnalyzer.getCurrentState() != ParserStates::Finish)
         {
             token = lexicalAnalyzer.getToken(inputStream);
             cmd = syntaxAnalyzer.processInput(token);

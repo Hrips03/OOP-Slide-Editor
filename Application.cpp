@@ -1,7 +1,5 @@
 #include "Application.hpp"
 #include "CLI/controller.hpp"
-#include <iostream>
-
 
 std::shared_ptr<Application> Application::getInstance()
 {
@@ -13,9 +11,28 @@ std::shared_ptr<Application> Application::getInstance()
 }
 
 std::shared_ptr<Application> Application::instance = nullptr;
+ 
+void Application::run()
+{
+    m_editor = std::make_shared<Editor>();
+    m_visualizer = std::make_shared<Visualizer>();
+    m_controller = std::make_shared<Controller>();
+    m_document = std::make_shared<Document>();
+    Controller::exitPtr = m_controller;
+    m_controller->run(std::cin);
+}
 
-void Application::run() {
-    auto controller = std::make_shared<Controller>();
-    Controller::exitPtr = controller;  
-    controller->run(std::cin);
+std::shared_ptr<Editor> Application::getEditor()
+{
+    return m_editor;
+}
+
+std::shared_ptr<Visualizer> Application::getVisualizer()
+{
+    return m_visualizer;
+}
+
+std::shared_ptr<Document> Application::getDocument()
+{
+    return m_document;
 }
