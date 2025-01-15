@@ -8,8 +8,7 @@ addShape ::addShape(int slideNum, std::shared_ptr<Item> item)
 
 void addShape ::execute()
 { 
-    std::shared_ptr<Item> newItem = m_item;
-    std::shared_ptr<IAction> action = std::make_shared<addShapeAct>(m_slideNumber, newItem);
+    std::shared_ptr<IAction> action = std::make_shared<addShapeAct>(m_slideNumber, m_item);
     m_editor->process(action);
 }
 

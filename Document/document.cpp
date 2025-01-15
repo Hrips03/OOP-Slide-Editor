@@ -83,18 +83,18 @@ void Document::changeGeom(int slideNum, int itemNum, Item::Geometry itemGeom, It
 
 void Document::save(const std::string& fileName) {
     std::string dir = "./Saved_Files/";
-    std::filesystem::create_directories(dir); // Ensure the directory exists
+    std::filesystem::create_directories(dir); 
 
     std::string filename = dir + fileName + ".txt";
 
-    std::ofstream file(filename, std::ios::out); // Use std::ios::out for normal writing
+    std::ofstream file(filename, std::ios::out);
 
     if (file.is_open()) {
-        size_t slideIndex = 0; // Start from Slide 0
+        size_t slideIndex = 0; 
         Visualizer visualizer;
 
         for (const auto& slide : slides) {
-            visualizer.printSlide(file, slide, slideIndex++); // Save slides using the updated format
+            visualizer.printSlide(file, slide, slideIndex++); 
         }
 
         file.close();
@@ -104,18 +104,6 @@ void Document::save(const std::string& fileName) {
     }
 }
 
-// std::shared_ptr<IShape> Document::createShapeFromItem(const Item& item) {
-//     switch (item.type) {
-//         case Item::ShapeType::Ellipse:
-//             return std::make_shared<Ellipse>(item);  // Pass the parsed Item to the Ellipse constructor
-//         case Item::ShapeType::Rectangle:
-//             return std::make_shared<Rectangle>(item);  // Pass the parsed Item to the Rectangle constructor
-//         case Item::ShapeType::Triangle:
-//             return std::make_shared<Triangle>(item);  // Pass the parsed Item to the Triangle constructor
-//         default:
-//             throw std::invalid_argument("Unknown shape type");
-//     }
-// }
 
 void Document::load(const std::string& fileName) {
     std::string dir = "./Saved_Files/";
@@ -126,16 +114,13 @@ void Document::load(const std::string& fileName) {
     if (file.is_open()) {
         slides.clear(); // Clear existing slides
         std::shared_ptr<Slide> currentSlide = nullptr;
-
         std::string line;
         while (std::getline(file, line)) {
-            std::cout << "Reading line: " << line << std::endl;  // Debugging line read
 
             if (line.find("Slide") == 0) { // Start of a new slide
                 size_t position = slides.size(); // Determine position for the new slide
                 currentSlide = std::make_shared<Slide>(position);
                 slides.push_back(currentSlide);
-                std::cout << "New slide created: " << position << std::endl;  // Debugging slide creation
             } else if (line.find("  Shape") == 0 && currentSlide != nullptr) {
                 Item item;
                 std::istringstream iss(line);
@@ -147,7 +132,6 @@ void Document::load(const std::string& fileName) {
                 iss >> temp >> temp >> colon; // Skip "Shape <index>:"
                 if (temp == "Ellipse") {
                     item.type = Item::ShapeType::Ellipse;
-                    std::cout << "Parsing Ellipse shape" << std::endl;  // Debugging shape type
 
                     // Parse Ellipse attributes
                     while (iss >> temp) {
@@ -164,12 +148,10 @@ void Document::load(const std::string& fileName) {
 
                     // Add Ellipse to the current slide
                     currentSlide->items.push_back(item);
-                    std::cout << "Added Ellipse to slide" << std::endl;  // Debugging shape added
                 }
                 else if (temp == "Rectangle") {
                     item.type = Item::ShapeType::Rectangle;
-                    std::cout << "Parsing Rectangle shape" << std::endl;  // Debugging shape type
-
+                    
                     // Parse Rectangle attributes
                     while (iss >> temp) {
                         if (temp == "PositionX:") iss >> item.geom.x;
@@ -185,7 +167,6 @@ void Document::load(const std::string& fileName) {
 
                     // Add Rectangle to the current slide
                     currentSlide->items.push_back(item);
-                    std::cout << "Added Rectangle to slide" << std::endl;  // Debugging shape added
                 }
                 else if (temp == "Triangle") {
                     item.type = Item::ShapeType::Triangle;
@@ -203,10 +184,9 @@ void Document::load(const std::string& fileName) {
                             iss >> item.attribs.outlineColor;
                         }
                     }
-
+ 
                     // Add Triangle to the current slide
                     currentSlide->items.push_back(item);
-                    std::cout << "Added Triangle to slide" << std::endl;  // Debugging shape added
                 }
             }
         }
@@ -226,8 +206,8 @@ void Document::printHelp()
                        "add slide -pos <number> : adding a slide\n"
                        "remove slide -pos <number> : removing a slide\n"
                        "print slide -pos <number> : printing a slide\n"
-                       "add shape -type <shapeType> -x <number> -y <number> -height <number> -width <number> -slide <number> -col <colorName> -outlineColor <outlineColorName>: adding a shape (color is optional)\n"
-                       "remove shape -type <shapeType> -x <number> -y <number> -height <number> -width <number> -slide <number> -col <colorName> -outlineColor <outlineColorName> : removing a shape (color is optional)\n"
+                       "add shape -type <shapeType> -x <number> -y <number> -height <number> -width <number> -slide <number> -col <colorName> -outlineColor <outlineColorName>: adding a shape\n"
+                       "remove shape -slide <number> -shape <number> : removing a shape\n"
                        "help : displaying this help message\n"
                        "exit : exiting the application\n";
 

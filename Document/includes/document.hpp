@@ -31,7 +31,6 @@ public:
 
     void save(const std::string& fileName);
     void load(const std::string& fileName);
-    std::shared_ptr<IShape> createShapeFromItem(const Item& item);
 
     void printHelp();
 

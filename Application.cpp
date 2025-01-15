@@ -15,7 +15,6 @@ std::shared_ptr<Application> Application::getInstance()
 std::shared_ptr<Application> Application::instance = nullptr;
 
 void Application::run() {
-   
     auto controller = std::make_shared<Controller>();
     Controller::exitPtr = controller;  
     controller->run(std::cin);
