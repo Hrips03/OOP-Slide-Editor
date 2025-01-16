@@ -1,5 +1,0 @@
-Slide 0:
-  Shape 0: Ellipse | CenterX: 5 | CenterY: 5 | Horizontal Radius (a): 10 | Vertical Radius (b): 10 | Color: white | Outline Color: black
----------------------
-Slide 1:
----------------------

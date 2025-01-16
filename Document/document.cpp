@@ -184,17 +184,19 @@ void Document::load(const std::string& fileName) {
 
 
 
-
 void Document::printHelp()
 {
     std::string help = "Commands prototypes:\n"
-                       "add slide -pos <number> : adding a slide\n"
-                       "remove slide -pos <number> : removing a slide\n"
-                       "print slide -pos <number> : printing a slide\n"
-                       "add shape -type <shapeType> -x <number> -y <number> -height <number> -width <number> -slide <number> -col <colorName> -outlineColor <outlineColorName>: adding a shape\n"
-                       "remove shape -slide <number> -shape <number> : removing a shape\n"
-                       "help : displaying this help message\n"
-                       "exit : exiting the application\n";
+                       "1. add slide -pos <number> : adding a slide\n"
+                       "2. remove slide -pos <number> : removing a slide\n"
+                       "3. print slide -pos <number> : printing a slide\n"
+                       "4. add shape -type <shapeType> -x <number> -y <number> -height <number> -width <number> -slide <number> -col <colorName> -outlineColor <outlineColorName>: adding a shape\n"
+                       "5. remove shape -slide <number> -shape <number> : removing a shape\n"
+                       "6. change geom -slide <number> -shape <number> -<option you want to change> <number/colorName>\n"
+                       "7. save -fileName <name>\n"
+                       "8. load -fileName -<name>\n"
+                       "9. help : displaying this help message\n"
+                       "10.exit : exiting the application\n";
 
     std::cout << help << std::endl;
 }
