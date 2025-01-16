@@ -4,7 +4,6 @@
 #include "./Shapes/Rectangle.hpp"
 #include "./Shapes/Triangle.hpp"
 #include <unordered_map>
-#include <unordered_set>
 #include <functional>
 
 std::unordered_map<Item::ShapeType, std::function<std::shared_ptr<IShape>(const Item &)>> prototypeFactory = {
@@ -31,7 +30,6 @@ void Visualizer::printSlide(std::ostream &out, std::shared_ptr<Slide> slide, siz
 
     for (auto shape : slide->items)
     {
-        // Create the appropriate shape based on its type
         std::shared_ptr<IShape> myShape = prototypeFactory.at(shape.type)(shape);
         myShape->print(out, shapeIndex);
         ++shapeIndex;

@@ -1,7 +1,8 @@
 #include "./includes/helpCmd.hpp"
 
 help::help(){
-    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = std::shared_ptr<Document>(new Document());
+    //m_doc = Application::getInstance()->getDocument();
 }
 
 std::shared_ptr<ICommand> help::clone() const

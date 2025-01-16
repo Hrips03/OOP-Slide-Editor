@@ -2,7 +2,8 @@
 
 changeGeometry ::changeGeometry(int slideNum, int itemNum, Item::Geometry itemGeom, Item::Attributes itemAttribs)
     : m_slideNumber(slideNum), m_itemNum(itemNum), m_itemGeom(itemGeom), m_itemAttribs(itemAttribs) {
-        std::shared_ptr<Editor> m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = std::shared_ptr<Editor>(new Editor());
+    //m_editor = Application::getInstance()->getEditor();
 }
 
 

@@ -2,7 +2,8 @@
 
 removeShape ::removeShape(int slideNum, int itemNum)
     : m_slideNumber(slideNum), m_itemNum(itemNum) {
-        std::shared_ptr<Editor> m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = std::shared_ptr<Editor>(new Editor());
+    //m_editor = Application::getInstance()->getEditor();
 }
 
 void removeShape ::execute()

@@ -2,7 +2,8 @@
 
 saveCmd::saveCmd(std::string fileName) : m_fileName(fileName)
 {
-    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = std::shared_ptr<Document>(new Document());
+    //m_doc = Application::getInstance()->getDocument();
 }
 
 void saveCmd ::execute()

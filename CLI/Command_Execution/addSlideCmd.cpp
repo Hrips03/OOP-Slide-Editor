@@ -1,8 +1,10 @@
 #include "./includes/addSlideCmd.hpp"
 
-addSlide::addSlide(int pos) : m_position(pos) {
-    std::shared_ptr<Editor> m_editor = std::shared_ptr<Editor>(new Editor());
-} 
+addSlide::addSlide(int pos) : m_position(pos)
+{
+    m_editor = std::shared_ptr<Editor>(new Editor());
+    //m_editor = Application::getInstance()->getEditor();
+}
 
 void addSlide ::execute()
 {
@@ -14,4 +16,4 @@ void addSlide ::execute()
 std::shared_ptr<ICommand> addSlide::clone() const
 {
     return std::make_shared<addSlide>(*this);
-}
+} 

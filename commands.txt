@@ -1,0 +1,6 @@
+add slide -pos 0
+add shape -type ellipse -slide 0
+add slide -pos 2
+add shape -type triangle -slide 1
+print slides
+exit

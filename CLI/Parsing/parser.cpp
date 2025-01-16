@@ -2,7 +2,9 @@
 
 std::shared_ptr<ICommand> Parser::parse(std::istream &inputStream)
 {
-    std::cout << "Enter command: ";
+    if (typeid(inputStream) != typeid(std::ifstream)) 
+        std::cout << "Enter command: ";
+
     syntaxAnalyzer.reset();
 
     Token token;

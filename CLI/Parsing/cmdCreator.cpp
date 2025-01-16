@@ -215,7 +215,6 @@ std::shared_ptr<ICommand> CommandCreator::semanticAnalizer(Command cmd)
         auto argIt = cmd.argList.find(option);
         if (argIt == cmd.argList.end())
         {
-            // Skip optional arguments
             if (option == "col" || option == "outlineCol" || option == "height" || option == "width" || option == "x" || option == "y")
                 continue;
 

@@ -1,7 +1,8 @@
 #include "./includes/printSlidesCmd.hpp"
 
 printSlides::printSlides(){
-    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = std::shared_ptr<Document>(new Document());
+    //m_doc = Application::getInstance()->getDocument();
 }
 
 void printSlides :: execute(){

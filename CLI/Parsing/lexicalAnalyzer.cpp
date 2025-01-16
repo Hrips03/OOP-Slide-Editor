@@ -5,7 +5,7 @@ Token LexicalAnalyzer::getToken(std::istream &inputStream)
     char ch;
     while (inputStream.get(ch) && ch == ' ');
 
-    if (ch == '\n')
+    if (ch == '\n'|| ch == '\r')
         return {Token::Type::EOC, {}};
 
     if (ch == '-')

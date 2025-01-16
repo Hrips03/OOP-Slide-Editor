@@ -1,7 +1,8 @@
 #include "./includes/remSlideCmd.hpp"
 
 removeSlide::removeSlide(int pos) : m_position(pos){
-    std::shared_ptr<Editor> m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = std::shared_ptr<Editor>(new Editor());
+    //m_editor = Application::getInstance()->getEditor();
 }
 
 void removeSlide ::execute()

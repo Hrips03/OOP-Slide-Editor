@@ -5,8 +5,6 @@ std::shared_ptr<Controller> Controller::exitPtr = nullptr;
 
 void Controller::run(std::istream &inputStream)
 {
-    //exitCmd(std::make_shared<Controller>(*this));
-
     while (m_isRunning)
     {
         Parser obParser;
@@ -14,11 +12,12 @@ void Controller::run(std::istream &inputStream)
         if (pCmd)
             pCmd->execute();
         else
-            std::cerr << "Failed to parse command.\n" << std::endl;
+            std::cerr << "Failed to parse command.\n"
+                      << std::endl;
     }
 }
 
-void Controller::exit(){
+void Controller::exit()
+{
     m_isRunning = false;
 }
-
