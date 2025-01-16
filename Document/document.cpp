@@ -81,122 +81,107 @@ void Document::changeGeom(int slideNum, int itemNum, Item::Geometry itemGeom, It
               << std::endl;
 }
 
+
+
 void Document::save(const std::string& fileName) {
     std::string dir = "./Saved_Files/";
-    std::filesystem::create_directories(dir); 
+    std::filesystem::create_directories(dir);
 
-    std::string filename = dir + fileName + ".txt";
+    std::string filename = dir + fileName + ".bin";
 
-    std::ofstream file(filename, std::ios::out);
-
-    if (file.is_open()) {
-        size_t slideIndex = 0; 
-        Visualizer visualizer;
-
-        for (const auto& slide : slides) {
-            visualizer.printSlide(file, slide, slideIndex++); 
-        }
-
-        file.close();
-        std::cout << "Document saved to " << filename << "!\n";
-    } else {
+    std::ofstream ofs(filename, std::ios::binary);
+    if (!ofs) {
         std::cerr << "Error: Could not open file for writing at " << filename << ".\n";
+        return;
     }
+
+    size_t slideCount = slides.size();
+    ofs.write(reinterpret_cast<const char*>(&slideCount), sizeof(slideCount)); // Write slide count
+
+    for (const auto& slide : slides) {
+        size_t position = slide->getPosition();
+        ofs.write(reinterpret_cast<const char*>(&position), sizeof(position)); // Write slide position
+
+        size_t itemCount = slide->items.size();
+        ofs.write(reinterpret_cast<const char*>(&itemCount), sizeof(itemCount)); // Write item count
+
+        for (const auto& item : slide->items) {
+            // Write shape type
+            ofs.write(reinterpret_cast<const char*>(&item.type), sizeof(item.type));
+
+            // Write geometric properties
+            ofs.write(reinterpret_cast<const char*>(&item.geom), sizeof(item.geom));
+
+            // Write attributes
+            size_t colorLength = item.attribs.color.size();
+            ofs.write(reinterpret_cast<const char*>(&colorLength), sizeof(colorLength));
+            ofs.write(item.attribs.color.data(), colorLength);
+
+            size_t outlineColorLength = item.attribs.outlineColor.size();
+            ofs.write(reinterpret_cast<const char*>(&outlineColorLength), sizeof(outlineColorLength));
+            ofs.write(item.attribs.outlineColor.data(), outlineColorLength);
+        }
+    }
+
+    ofs.close();
+    std::cout << "Document saved to " << filename << "!\n";
 }
 
 
 void Document::load(const std::string& fileName) {
     std::string dir = "./Saved_Files/";
-    std::string filename = dir + fileName + ".txt";
+    std::string filename = dir + fileName + ".bin";
 
-    std::ifstream file(filename, std::ios::in);
+    std::ifstream ifs(filename, std::ios::binary);
+    if (!ifs) {
+        std::cerr << "Error: Could not open file for reading at " << filename << ".\n";
+        return;
+    }
 
-    if (file.is_open()) {
-        slides.clear(); // Clear existing slides
-        std::shared_ptr<Slide> currentSlide = nullptr;
-        std::string line;
-        while (std::getline(file, line)) {
+    slides.clear(); // Clear existing slides
 
-            if (line.find("Slide") == 0) { // Start of a new slide
-                size_t position = slides.size(); // Determine position for the new slide
-                currentSlide = std::make_shared<Slide>(position);
-                slides.push_back(currentSlide);
-            } else if (line.find("  Shape") == 0 && currentSlide != nullptr) {
-                Item item;
-                std::istringstream iss(line);
+    size_t slideCount;
+    ifs.read(reinterpret_cast<char*>(&slideCount), sizeof(slideCount)); // Read slide count
 
-                std::string temp;
-                char colon;
+    for (size_t i = 0; i < slideCount; ++i) {
+        size_t position;
+        ifs.read(reinterpret_cast<char*>(&position), sizeof(position)); // Read slide position
 
-                // Parse shape type
-                iss >> temp >> temp >> colon; // Skip "Shape <index>:"
-                if (temp == "Ellipse") {
-                    item.type = Item::ShapeType::Ellipse;
+        auto slide = std::make_shared<Slide>(position);
 
-                    // Parse Ellipse attributes
-                    while (iss >> temp) {
-                        if (temp == "CenterX:") iss >> item.geom.x; // This is the center X
-                        else if (temp == "CenterY:") iss >> item.geom.y; // This is the center Y
-                        else if (temp == "Horizontal") iss >> temp >> item.geom.width; // Horizontal radius (width)
-                        else if (temp == "Vertical") iss >> temp >> item.geom.height; // Vertical radius (height)
-                        else if (temp == "Color:") iss >> item.attribs.color;
-                        else if (temp == "Outline") {
-                            iss >> temp; // Skip "Color:"
-                            iss >> item.attribs.outlineColor;
-                        }
-                    }
+        size_t itemCount;
+        ifs.read(reinterpret_cast<char*>(&itemCount), sizeof(itemCount)); // Read item count
 
-                    // Add Ellipse to the current slide
-                    currentSlide->items.push_back(item);
-                }
-                else if (temp == "Rectangle") {
-                    item.type = Item::ShapeType::Rectangle;
-                    
-                    // Parse Rectangle attributes
-                    while (iss >> temp) {
-                        if (temp == "PositionX:") iss >> item.geom.x;
-                        else if (temp == "PositionY:") iss >> item.geom.y;
-                        else if (temp == "Width:") iss >> item.geom.width;
-                        else if (temp == "Height:") iss >> item.geom.height;
-                        else if (temp == "Color:") iss >> item.attribs.color;
-                        else if (temp == "Outline") {
-                            iss >> temp; // Skip "Color:"
-                            iss >> item.attribs.outlineColor;
-                        }
-                    }
+        for (size_t j = 0; j < itemCount; ++j) {
+            Item item;
 
-                    // Add Rectangle to the current slide
-                    currentSlide->items.push_back(item);
-                }
-                else if (temp == "Triangle") {
-                    item.type = Item::ShapeType::Triangle;
-                    std::cout << "Parsing Triangle shape" << std::endl;  // Debugging shape type
+            // Read shape type
+            ifs.read(reinterpret_cast<char*>(&item.type), sizeof(item.type));
 
-                    // Parse Triangle attributes
-                    while (iss >> temp) {
-                        if (temp == "Side") {
-                            if (temp == "1") iss >> temp >> item.geom.width; // Left side
-                            else if (temp == "2") iss >> temp >> item.geom.height; // Right side
-                            else if (temp == "3") iss >> temp >> item.attribs.color; // Base side
-                        } else if (temp == "Color:") iss >> item.attribs.color;
-                        else if (temp == "Outline") {
-                            iss >> temp; // Skip "Color:"
-                            iss >> item.attribs.outlineColor;
-                        }
-                    }
- 
-                    // Add Triangle to the current slide
-                    currentSlide->items.push_back(item);
-                }
-            }
+            // Read geometric properties
+            ifs.read(reinterpret_cast<char*>(&item.geom), sizeof(item.geom));
+
+            // Read attributes
+            size_t colorLength;
+            ifs.read(reinterpret_cast<char*>(&colorLength), sizeof(colorLength));
+            item.attribs.color.resize(colorLength);
+            ifs.read(&item.attribs.color[0], colorLength);
+
+            size_t outlineColorLength;
+            ifs.read(reinterpret_cast<char*>(&outlineColorLength), sizeof(outlineColorLength));
+            item.attribs.outlineColor.resize(outlineColorLength);
+            ifs.read(&item.attribs.outlineColor[0], outlineColorLength);
+
+            slide->items.push_back(item);
         }
 
-        file.close();
-        std::cout << "Document loaded successfully from " << filename << "!\n";
-    } else {
-        std::cerr << "Error: Could not open file for reading at " << filename << ".\n";
+        slides.push_back(slide);
     }
+
+    ifs.close();
+    std::cout << "Document loaded successfully from " << filename << "!\n";
 }
+
 
 
 

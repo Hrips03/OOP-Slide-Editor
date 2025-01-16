@@ -1,6 +1,5 @@
 #include "Application.hpp"
-#include "CLI/controller.hpp"
-
+ 
 std::shared_ptr<Application> Application::getInstance()
 {
     if (!Application::instance)
@@ -10,15 +9,20 @@ std::shared_ptr<Application> Application::getInstance()
     return Application::instance;
 }
 
-std::shared_ptr<Application> Application::instance = nullptr;
- 
-void Application::run()
+Application::Application()
 {
     m_editor = std::make_shared<Editor>();
     m_visualizer = std::make_shared<Visualizer>();
     m_controller = std::make_shared<Controller>();
     m_document = std::make_shared<Document>();
     Controller::exitPtr = m_controller;
+}
+
+std::shared_ptr<Application> Application::instance = nullptr;
+
+void Application::run()
+{
+
     m_controller->run(std::cin);
 }
 

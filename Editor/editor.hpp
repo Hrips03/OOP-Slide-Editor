@@ -4,6 +4,7 @@
 #include "IAction.hpp"
 #include "../Document/includes/document.hpp"
 
+
 class Editor
 {
     static std::stack<std::shared_ptr<IAction>> undoStack;

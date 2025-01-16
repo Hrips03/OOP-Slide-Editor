@@ -1,7 +1,8 @@
 #include "addShapeAction.hpp"
 
 addShapeAct::addShapeAct(int slide, std::shared_ptr<Item> item) : m_slideID(slide), m_item(item) {
-    std::shared_ptr<Document> m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = std::shared_ptr<Document>(new Document());
+    //m_doc = Application::getInstance()->getDocument();
 }
 
 std::shared_ptr<IAction> addShapeAct::doAction()
