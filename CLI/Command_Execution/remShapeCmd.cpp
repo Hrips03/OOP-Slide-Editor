@@ -1,9 +1,10 @@
 #include "./includes/remShapeCmd.hpp"
+#include "../../Application.hpp"
 
 removeShape ::removeShape(int slideNum, int itemNum)
     : m_slideNumber(slideNum), m_itemNum(itemNum) {
-    m_editor = std::shared_ptr<Editor>(new Editor());
-    //m_editor = Application::getInstance()->getEditor();
+    //m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = Application::getInstance()->getEditor();
 }
 
 void removeShape ::execute()

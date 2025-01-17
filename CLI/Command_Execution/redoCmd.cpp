@@ -1,8 +1,9 @@
 #include "./includes/redoCmd.hpp"
+#include "../../Application.hpp"
 
 RedoCmd::RedoCmd(){
-    m_editor = std::shared_ptr<Editor>(new Editor());
-    //m_editor = Application::getInstance()->getEditor();
+    //m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = Application::getInstance()->getEditor();
 }
 
 void RedoCmd ::execute()

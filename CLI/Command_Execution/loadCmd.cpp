@@ -1,9 +1,10 @@
 #include "./includes/loadCmd.hpp"
+#include "../../Application.hpp"
 
 loadCmd::loadCmd(std::string fileName) : m_fileName(fileName)
 {
-    m_doc = std::shared_ptr<Document>(new Document());
-    //m_doc = Application::getInstance()->getDocument();
+    //m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = Application::getInstance()->getDocument();
 }
 
 void loadCmd ::execute()

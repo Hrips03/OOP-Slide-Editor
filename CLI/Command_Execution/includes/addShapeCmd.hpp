@@ -1,7 +1,7 @@
+#pragma once
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>
-#include "../../../Document/includes/document.hpp"
 #include "../../../Editor/addShapeAction.hpp"
 
 class addShape : public ICommand

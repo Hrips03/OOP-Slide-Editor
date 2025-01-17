@@ -1,8 +1,9 @@
 #include "removeSlideAct.hpp"
+#include "../Application.hpp"
 
 removeSlideAct::removeSlideAct(int pos) : m_pos(pos) {
-    m_doc = std::shared_ptr<Document>(new Document());
-    //m_doc = Application::getInstance()->getDocument();
+    //m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = Application::getInstance()->getDocument();
 }
 
 std::shared_ptr<IAction> removeSlideAct::doAction()

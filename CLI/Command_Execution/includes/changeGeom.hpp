@@ -1,3 +1,4 @@
+#pragma once
 #include "ICommand.hpp"
 #include <vector>
 #include <iostream>

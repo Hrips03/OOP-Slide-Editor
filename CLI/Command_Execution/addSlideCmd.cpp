@@ -1,9 +1,10 @@
 #include "./includes/addSlideCmd.hpp"
+#include "../../Application.hpp"
 
 addSlide::addSlide(int pos) : m_position(pos)
 {
-    m_editor = std::shared_ptr<Editor>(new Editor());
-    //m_editor = Application::getInstance()->getEditor();
+    //m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = Application::getInstance()->getEditor();
 }
 
 void addSlide ::execute()

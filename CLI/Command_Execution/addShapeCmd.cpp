@@ -1,10 +1,11 @@
 #include "./includes/addShapeCmd.hpp"
+#include "../../Application.hpp"
 
 addShape ::addShape(int slideNum, std::shared_ptr<Item> item)
     : m_slideNumber(slideNum), m_item(item)
 {
-    m_editor = std::shared_ptr<Editor>(new Editor());
-    //m_editor = Application::getInstance()->getEditor();
+    //m_editor = std::shared_ptr<Editor>(new Editor());
+    m_editor = Application::getInstance()->getEditor();
 }
 
 void addShape ::execute()

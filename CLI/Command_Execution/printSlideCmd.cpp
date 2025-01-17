@@ -1,8 +1,9 @@
 #include "./includes/printSlideCmd.hpp"
+#include "../../Application.hpp"
 
 printSlide::printSlide(int pos) : m_position(pos) {
-    m_doc = std::shared_ptr<Document>(new Document());
-    //m_doc = Application::getInstance()->getDocument();
+    //m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = Application::getInstance()->getDocument();
 }
 
 void printSlide :: execute(){

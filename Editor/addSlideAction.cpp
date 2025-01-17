@@ -1,8 +1,9 @@
 #include "addSlideAction.hpp"
+#include "../Application.hpp"
 
 addSlideAct::addSlideAct(std::shared_ptr<Slide> newSlide) : m_slide(newSlide) {
-    m_doc = std::shared_ptr<Document>(new Document());
-    //m_doc = Application::getInstance()->getDocument();
+    //m_doc = std::shared_ptr<Document>(new Document());
+    m_doc = Application::getInstance()->getDocument();
 }
 
 std::shared_ptr<IAction> addSlideAct::doAction()
